@@ -1,6 +1,7 @@
-import TravelLogForm from '@/components/TravelLogForm';
+import TravelLogMap from '@/components/TravelLogMap';
 import useFetchLogs from '@/hooks/useFetchLogs';
 import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
+import Head from 'next/head';
 
 interface LogsType {
   logs: TravelLogTypeWithId[];
@@ -12,16 +13,12 @@ export default function Home() {
 
   return (
     <>
+      <Head>
+        <title>Travel Log</title>
+      </Head>
       <main>
-        <TravelLogForm />
-        {loading && <span>Loading...</span>}
-        {logs.map((log) => (
-          <span className="flex flex-col gap-2" key={log._id.toString()}>
-            {log.title}
-          </span>
-        ))}
+        {loading ? <h3>Loading...</h3> : <TravelLogMap logs={logs} />}
       </main>
     </>
   );
 }
-// 3:40:45 Mapbox config
