@@ -19,7 +19,18 @@ export default function TravelLogForm() {
       visitDate: defaultDate(),
     },
   });
-  const onSubmit: SubmitHandler<TravelLogType> = (data) => console.log(data);
+
+  const onSubmit: SubmitHandler<TravelLogType> = async (data) => {
+    const response = await fetch('/api/logs', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    const json = await response.json();
+    console.log(json);
+  };
 
   return (
     <form
@@ -43,6 +54,7 @@ export default function TravelLogForm() {
             ) : (
               <input
                 type={input.type}
+                step="any"
                 className={`input input-bordered w-full ${
                   errors[titleProperty] ? 'input-error' : ''
                 }`}

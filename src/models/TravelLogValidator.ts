@@ -1,3 +1,4 @@
+import { WithId } from 'mongodb';
 import { z } from 'zod';
 
 export const TravelLogValidator = z.object({
@@ -14,3 +15,4 @@ export const TravelLogValidator = z.object({
 });
 
 export type TravelLogType = z.infer<typeof TravelLogValidator>;
+export type TravelLogTypeWithId = WithId<TravelLogType>;

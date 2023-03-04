@@ -1,22 +1,25 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { TravelLog, TravelLogs } from '@/models/TravelLogs';
+import { TravelLogs, TravelLogValidator } from '@/models/TravelLogs';
+import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<
+    TravelLogTypeWithId | TravelLogTypeWithId[] | { message: string }
+  >
 ) {
   try {
     switch (req.method) {
       case 'POST': {
-        const validateTravelLog = await TravelLog.parseAsync(req.body);
+        const validateTravelLog = await TravelLogValidator.parseAsync(req.body);
         const postTravelLog = await TravelLogs.insertOne(validateTravelLog);
         return res.status(200).json({
-          ...req.body,
+          ...validateTravelLog,
           _id: postTravelLog.insertedId,
         });
       }
       case 'GET': {
-        const logs = TravelLogs.find().toArray();
+        const logs = await TravelLogs.find().toArray();
         return res.status(200).json(logs);
       }
       default: {

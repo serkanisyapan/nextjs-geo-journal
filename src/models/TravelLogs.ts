@@ -1,6 +1,6 @@
 import db from '@/db';
-import { TravelLogValidator } from './TravelLogValidator';
+import { TravelLogValidator, TravelLogType } from './TravelLogValidator';
 
 export { TravelLogValidator };
 
-export const TravelLogs = db.collection('logs');
+export const TravelLogs = db.collection<TravelLogType>('logs');
