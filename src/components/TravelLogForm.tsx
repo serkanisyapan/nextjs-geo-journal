@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TravelLogValidator, TravelLogType } from '@/models/TravelLogValidator';
@@ -5,6 +6,7 @@ import defaultDate from '@/utils/defaultDate';
 import formInputs from '@/data/formInputs';
 
 export default function TravelLogForm() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -30,11 +32,12 @@ export default function TravelLogForm() {
     });
     const json = await response.json();
     console.log(json);
+    router.push('/');
   };
 
   return (
     <form
-      className="max-w-lg m-auto flex flex-col gap-2"
+      className="max-w-lg m-auto flex flex-col gap-2 my-4"
       onSubmit={handleSubmit(onSubmit)}
     >
       {formInputs.map((input) => {
