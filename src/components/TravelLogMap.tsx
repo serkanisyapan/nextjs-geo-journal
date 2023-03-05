@@ -7,9 +7,9 @@ import Map, {
   ScaleControl,
 } from 'react-map-gl';
 import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
-import Link from 'next/link';
 import MapPin from './MapPin';
 import PopupInfo from './PopupInfo';
+import SidebarForm from './SidebarForm';
 
 interface Props {
   logs: TravelLogTypeWithId[];
@@ -60,17 +60,7 @@ export default function TravelLogMap({ logs }: Props) {
           <PopupInfo popupInfo={popupInfo} />
         </Popup>
       )}
-      <Link
-        href="/newlog"
-        className="btn btn-info fixed top-2 right-2 m-3 z-999"
-      >
-        + New Log
-      </Link>
+      <SidebarForm />
     </Map>
   );
 }
-
-// https://stackoverflow.com/questions/45079029/react-fitbounds-issue-when-passing-array-of-longlat-react-mapbox-gl
-// https://github.com/alex3165/react-mapbox-gl/blob/master/docs/API.md
-// https://stackoverflow.com/questions/68666400/fit-all-coordinates-into-the-bounds-of-the-map-react-in-mapbox
-// https://dev.to/ivanbtrujillo/fit-viewport-to-markers-using-react-map-gl-3ig1

@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export default function useFetchLogs() {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setLoading(true);
@@ -12,7 +14,7 @@ export default function useFetchLogs() {
         setLogs(data);
         setLoading(false);
       });
-  }, []);
+  }, [router.query]);
 
   return { logs, loading };
 }
