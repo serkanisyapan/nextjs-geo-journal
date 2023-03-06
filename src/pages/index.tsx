@@ -1,7 +1,10 @@
+import LoadingSpinner from '@/components/LoadingSpinner';
 import TravelLogMap from '@/components/TravelLogMap';
 import useFetchLogs from '@/hooks/useFetchLogs';
 import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
 import Head from 'next/head';
+import SidebarForm from '@/components/SidebarForm';
+import TravelLogProvider from '@/context/TravelLogProvider';
 
 interface LogsType {
   logs: TravelLogTypeWithId[];
@@ -16,9 +19,10 @@ export default function Home() {
       <Head>
         <title>Travel Log</title>
       </Head>
-      <main>
-        {loading ? <h3>Loading...</h3> : <TravelLogMap logs={logs} />}
-      </main>
+      <TravelLogProvider>
+        {loading ? <LoadingSpinner /> : <TravelLogMap logs={logs} />}
+        <SidebarForm />
+      </TravelLogProvider>
     </>
   );
 }

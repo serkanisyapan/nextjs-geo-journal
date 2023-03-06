@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Map, {
   Marker,
   Popup,
@@ -7,9 +7,9 @@ import Map, {
   ScaleControl,
 } from 'react-map-gl';
 import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
+import TravelLogContext from '@/context/TravelLogContext';
 import MapPin from './MapPin';
 import PopupInfo from './PopupInfo';
-import SidebarForm from './SidebarForm';
 
 interface Props {
   logs: TravelLogTypeWithId[];
@@ -17,6 +17,8 @@ interface Props {
 
 export default function TravelLogMap({ logs }: Props) {
   const [popupInfo, setPopupInfo] = useState<TravelLogTypeWithId | null>(null);
+  const { newLogMarker, setNewLogMarker, setSidebarVisible } =
+    useContext(TravelLogContext);
   const lastLog = logs[logs.length - 1];
 
   return (
@@ -24,15 +26,24 @@ export default function TravelLogMap({ logs }: Props) {
       initialViewState={{
         longitude: lastLog?.longitude,
         latitude: lastLog?.latitude,
-        zoom: 5,
+        zoom: 10,
       }}
       mapStyle="mapbox://styles/mapbox/dark-v9"
       mapboxAccessToken={`${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`}
       style={{ width: '100vw', height: '100vh' }}
+      onClick={(event) => {
+        setNewLogMarker(event.lngLat);
+        setSidebarVisible(true);
+      }}
     >
       <FullscreenControl position="top-left" />
       <NavigationControl position="top-left" />
       <ScaleControl />
+      {newLogMarker && (
+        <Marker longitude={newLogMarker.lng} latitude={newLogMarker.lat}>
+          <MapPin />
+        </Marker>
+      )}
       {logs.map((log) => (
         <Marker
           key={`marker-${log._id}`}
@@ -60,7 +71,6 @@ export default function TravelLogMap({ logs }: Props) {
           <PopupInfo popupInfo={popupInfo} />
         </Popup>
       )}
-      <SidebarForm />
     </Map>
   );
 }

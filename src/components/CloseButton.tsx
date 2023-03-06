@@ -1,10 +1,17 @@
-interface Props {
-  onClose: () => void;
-}
+import TravelLogContext from '@/context/TravelLogContext';
+import { useContext } from 'react';
 
-export default function CloseButton({ onClose }: Props) {
+export default function CloseButton() {
+  const { setNewLogMarker, setSidebarVisible } = useContext(TravelLogContext);
+
   return (
-    <button onClick={onClose} className="btn btn-circle btn-outline btn-sm">
+    <button
+      onClick={() => {
+        setSidebarVisible(false);
+        setNewLogMarker(null);
+      }}
+      className="btn btn-circle btn-outline btn-sm"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-6 w-6"
