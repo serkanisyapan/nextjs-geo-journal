@@ -1,14 +1,15 @@
 module.exports = {
   parserOptions: {
-    project: ["./tsconfig.json"],
+    project: ['./tsconfig.json'],
   },
   extends: [
-    "next/core-web-vitals",
-    "airbnb-base",
-    "airbnb-typescript",
-    "plugin:prettier/recommended",
+    'next/core-web-vitals',
+    'airbnb-base',
+    'airbnb-typescript',
+    'plugin:prettier/recommended',
   ],
   rules: {
-    "no-underscore-dangle": 0,
+    'no-underscore-dangle': 0,
+    'no-nested-ternary': 0,
   },
 };

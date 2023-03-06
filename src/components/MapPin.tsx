@@ -1,4 +1,7 @@
-export default function MapPin() {
+interface MapPinProps {
+  color: string;
+}
+export default function MapPin({ color }: MapPinProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -6,7 +9,7 @@ export default function MapPin() {
       height="36"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="white"
+      stroke={color}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
