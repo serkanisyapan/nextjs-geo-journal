@@ -12,6 +12,7 @@ export const TravelLogValidator = z.object({
   latitude: z.coerce.number().min(-90).max(90),
   longitude: z.coerce.number().min(-180).max(180),
   visitDate: z.coerce.date(),
+  apiKey: z.string().min(1, 'API Key cannot be empty'),
 });
 
 export type TravelLogType = z.infer<typeof TravelLogValidator>;

@@ -6,6 +6,11 @@ interface FormInput {
 
 const formInputs: FormInput[] = [
   {
+    label: 'API Key',
+    type: 'password',
+    title: 'apiKey',
+  },
+  {
     label: 'Title',
     type: 'text',
     title: 'title',

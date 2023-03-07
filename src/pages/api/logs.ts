@@ -2,6 +2,19 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { TravelLogs, TravelLogValidator } from '@/models/TravelLogs';
 import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
 
+if (!process.env.API_KEY) {
+  throw new Error('API key is missing in .env file.');
+}
+
+class ErrorWithStatusCode extends Error {
+  status = 500;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.status = status;
+  }
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<
@@ -11,7 +24,12 @@ export default async function handler(
   try {
     switch (req.method) {
       case 'POST': {
+        if (req.body.apiKey !== process.env.API_KEY) {
+          throw new ErrorWithStatusCode('Unauthorized.', 401);
+        }
         const validateTravelLog = await TravelLogValidator.parseAsync(req.body);
+        // @ts-expect-error
+        delete validateTravelLog.apiKey;
         const postTravelLog = await TravelLogs.insertOne(validateTravelLog);
         return res.status(200).json({
           ...validateTravelLog,
@@ -28,6 +46,9 @@ export default async function handler(
     }
   } catch (e) {
     const error = e as Error;
-    return res.status(500).json({ message: error.message });
+    if (error instanceof ErrorWithStatusCode) {
+      res.status(error.status);
+    }
+    return res.json({ message: error.message });
   }
 }

@@ -27,6 +27,7 @@ export default function TravelLogForm() {
       longitude: newLogMarker?.lng,
       // @ts-ignore
       visitDate: defaultDate(),
+      apiKey: localStorage.getItem('apiKey') ?? '',
     },
   });
 
@@ -40,6 +41,7 @@ export default function TravelLogForm() {
         body: JSON.stringify(data),
       });
       if (response.ok) {
+        localStorage.setItem('apiKey', data.apiKey);
         reset();
         setSidebarVisible(false);
         setNewLogMarker(null);
@@ -51,6 +53,9 @@ export default function TravelLogForm() {
     } catch (e) {
       const error = e as Error;
       setFormError(error.message);
+      setTimeout(() => {
+        setFormError('');
+      }, 1500);
     }
   };
 
@@ -68,7 +73,6 @@ export default function TravelLogForm() {
       {formError && (
         <div className="alert alert-error shadow-lg my-2">
           <div>
-            <CloseButton />
             <span>{formError}</span>
           </div>
         </div>
