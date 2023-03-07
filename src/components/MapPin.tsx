@@ -1,12 +1,13 @@
 interface MapPinProps {
   color: string;
+  size: number;
 }
-export default function MapPin({ color }: MapPinProps) {
+export default function MapPin({ color, size }: MapPinProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="36"
-      height="36"
+      width={size}
+      height={size}
       viewBox="0 0 24 24"
       fill="none"
       stroke={color}

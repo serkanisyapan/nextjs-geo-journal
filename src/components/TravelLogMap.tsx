@@ -1,4 +1,4 @@
-import { useContext, useState, useRef } from 'react';
+import { useContext, useState, useRef, useEffect } from 'react';
 import Map, {
   Marker,
   Popup,
@@ -24,7 +24,7 @@ const ANKARA_COORDINATES = {
 
 export default function TravelLogMap({ logs }: Props) {
   const [popupInfo, setPopupInfo] = useState<TravelLogTypeWithId | null>(null);
-  const { newLogMarker, setNewLogMarker, setSidebarVisible } =
+  const { newLogMarker, setNewLogMarker, sidebarVisible, setSidebarVisible } =
     useContext(TravelLogContext);
   const mapRef = useRef<MapRef>(null);
   const lastLog = logs[logs.length - 1];
@@ -33,6 +33,14 @@ export default function TravelLogMap({ logs }: Props) {
     if (!event.lngLat) return;
     setNewLogMarker(event.lngLat);
   }
+
+  useEffect(() => {
+    if (sidebarVisible && !newLogMarker) {
+      const getMapCenter = mapRef.current?.getCenter();
+      if (!getMapCenter) return;
+      setNewLogMarker(getMapCenter);
+    }
+  }, [sidebarVisible, newLogMarker, setNewLogMarker]);
 
   return (
     <Map
@@ -65,28 +73,41 @@ export default function TravelLogMap({ logs }: Props) {
           longitude={newLogMarker.lng}
           latitude={newLogMarker.lat}
         >
-          <MapPin color="#38E54D" />
+          <MapPin color="#38E54D" size={44} />
         </Marker>
       )}
-      {logs.map((log) => (
-        <Marker
-          key={`marker-${log._id}`}
-          longitude={log.longitude}
-          latitude={log.latitude}
-          anchor="bottom"
-          onClick={(e) => {
-            e.originalEvent.stopPropagation();
-            setPopupInfo(log);
-          }}
-          style={{ cursor: 'pointer' }}
-        >
-          <MapPin color="white" />
-        </Marker>
-      ))}
+      {logs.map((log) => {
+        const isSelectedLog = popupInfo?._id === log._id;
+        return (
+          <Marker
+            key={`marker-${log._id}`}
+            longitude={log.longitude}
+            latitude={log.latitude}
+            anchor="bottom"
+            onClick={(e) => {
+              e.originalEvent.stopPropagation();
+              setPopupInfo(log);
+            }}
+            style={{ cursor: 'pointer' }}
+          >
+            <MapPin
+              color={isSelectedLog ? '#FF785A' : 'white'}
+              size={isSelectedLog ? 44 : 32}
+            />
+          </Marker>
+        );
+      })}
       {popupInfo && (
         <Popup
+          closeOnClick={true}
           maxWidth="300px"
-          style={{ color: 'black' }}
+          style={{
+            color: 'black',
+            fontSize: '24px',
+            fontFamily: 'monospace',
+            padding: '0px',
+            margin: '0px',
+          }}
           anchor="top"
           longitude={Number(popupInfo.longitude)}
           latitude={Number(popupInfo.latitude)}

@@ -16,8 +16,7 @@
   * [x] Click on map to choose latitude / longitude
   * [x] Re-load map after create
   * [x] Show server errors in form
-* [ ] Lock down with a api key
-* [ ] Rate Limit
+* [x] Lock down with a api key
 * [ ] DEPLOY!
   * [ ] Vercel
   * [ ] Mongo Atlas
@@ -28,10 +27,11 @@
 
 # Other TODO's
 
-* Change size of selected icon...
+* [x] When clicked '+ new log', put marker on center
+* [x] Change size of selected icon
+* [x] Style popup menu
 * Set places you want to visit
 * Multiple at same location???
 * Next Auth...
 * Search for locations
-* When clicked '+ new log', put on user current location
 * List logs in sidebar, click to zoom
