@@ -83,6 +83,7 @@ export default function TravelLogForm() {
       >
         {formInputs.map((input) => {
           const titleProperty = input.title as keyof typeof errors;
+          const registerProperty = input.title as keyof TravelLogType;
           return (
             <div key={input.label} className="form-control w-full">
               <label className="label">
@@ -93,7 +94,7 @@ export default function TravelLogForm() {
                   className={`textarea textarea-bordered ${
                     errors.description ? 'textarea-error' : ''
                   }`}
-                  {...register(titleProperty)}
+                  {...register(registerProperty)}
                 ></textarea>
               ) : input.title === 'latitude' || input.title === 'longitude' ? (
                 <input
@@ -102,7 +103,7 @@ export default function TravelLogForm() {
                   }`}
                   type={input.type}
                   disabled
-                  {...register(titleProperty)}
+                  {...register(registerProperty)}
                 />
               ) : (
                 <input
@@ -111,7 +112,7 @@ export default function TravelLogForm() {
                   className={`input input-bordered w-full ${
                     errors[titleProperty] ? 'input-error' : ''
                   }`}
-                  {...register(titleProperty)}
+                  {...register(registerProperty)}
                 />
               )}
               {errors[titleProperty] && (

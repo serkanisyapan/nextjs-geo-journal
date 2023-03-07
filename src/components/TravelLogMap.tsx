@@ -1,17 +1,15 @@
 import { useContext, useState, useRef, useEffect } from 'react';
 import Map, {
   Marker,
-  Popup,
-  NavigationControl,
-  FullscreenControl,
-  ScaleControl,
   MarkerDragEvent,
   MapRef,
+  MapLayerMouseEvent,
 } from 'react-map-gl';
 import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
 import TravelLogContext from '@/context/TravelLogContext';
 import MapPin from './MapPin';
-import PopupInfo from './PopupInfo';
+import MapControls from './MapControls';
+import LogPopup from './LogPopup';
 
 interface Props {
   logs: TravelLogTypeWithId[];
@@ -34,6 +32,19 @@ export default function TravelLogMap({ logs }: Props) {
     setNewLogMarker(event.lngLat);
   }
 
+  const handlePopupClose = () => {
+    setPopupInfo(null);
+  };
+
+  const handleMapClick = (event: MapLayerMouseEvent) => {
+    setNewLogMarker(event.lngLat);
+    setSidebarVisible(true);
+    mapRef.current?.flyTo({
+      center: [event.lngLat.lng, event.lngLat.lat],
+      duration: 1000,
+    });
+  };
+
   useEffect(() => {
     if (sidebarVisible && !newLogMarker) {
       const getMapCenter = mapRef.current?.getCenter();
@@ -54,18 +65,9 @@ export default function TravelLogMap({ logs }: Props) {
       ref={mapRef}
       mapboxAccessToken={`${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`}
       style={{ width: '100vw', height: '100vh' }}
-      onClick={(event) => {
-        setNewLogMarker(event.lngLat);
-        setSidebarVisible(true);
-        mapRef.current?.flyTo({
-          center: [event.lngLat.lng, event.lngLat.lat],
-          duration: 1000,
-        });
-      }}
+      onClick={handleMapClick}
     >
-      <FullscreenControl position="top-left" />
-      <NavigationControl position="top-left" />
-      <ScaleControl />
+      <MapControls />
       {newLogMarker && (
         <Marker
           draggable
@@ -98,23 +100,7 @@ export default function TravelLogMap({ logs }: Props) {
         );
       })}
       {popupInfo && (
-        <Popup
-          closeOnClick={true}
-          maxWidth="300px"
-          style={{
-            color: 'black',
-            fontSize: '24px',
-            fontFamily: 'monospace',
-            padding: '0px',
-            margin: '0px',
-          }}
-          anchor="top"
-          longitude={Number(popupInfo.longitude)}
-          latitude={Number(popupInfo.latitude)}
-          onClose={() => setPopupInfo(null)}
-        >
-          <PopupInfo popupInfo={popupInfo} />
-        </Popup>
+        <LogPopup handlePopupClose={handlePopupClose} popupInfo={popupInfo} />
       )}
     </Map>
   );

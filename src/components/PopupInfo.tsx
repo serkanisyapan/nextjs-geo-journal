@@ -4,7 +4,7 @@ interface PopupProps {
   popupInfo: TravelLogTypeWithId;
 }
 
-export default function Popups({ popupInfo }: PopupProps) {
+export default function PopupInfo({ popupInfo }: PopupProps) {
   return (
     <>
       <p className="text-lg font-bold mb-2">{popupInfo.title}</p>
