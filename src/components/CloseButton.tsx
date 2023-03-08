@@ -2,12 +2,14 @@ import TravelLogContext from '@/context/TravelLogContext';
 import { useContext } from 'react';
 
 export default function CloseButton() {
-  const { setNewLogMarker, setSidebarVisible } = useContext(TravelLogContext);
+  const { setNewLogMarker, setSidebarVisible, setLogsbarVisible } =
+    useContext(TravelLogContext);
 
   return (
     <button
       onClick={() => {
         setSidebarVisible(false);
+        setLogsbarVisible(false);
         setNewLogMarker(null);
       }}
       className="btn btn-circle btn-outline btn-sm"

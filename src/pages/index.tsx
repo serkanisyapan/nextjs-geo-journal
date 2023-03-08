@@ -5,6 +5,7 @@ import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
 import Head from 'next/head';
 import SidebarForm from '@/components/SidebarForm';
 import TravelLogProvider from '@/context/TravelLogProvider';
+import SidebarLogs from '@/components/SidebarLogs';
 
 interface LogsType {
   logs: TravelLogTypeWithId[];
@@ -26,6 +27,7 @@ export default function Home() {
           <>
             <TravelLogMap logs={logs} />
             <SidebarForm />
+            <SidebarLogs logs={logs} />
           </>
         )}
       </TravelLogProvider>

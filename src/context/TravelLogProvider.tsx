@@ -1,4 +1,6 @@
-import { ReactNode, useState } from 'react';
+import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
+import { ReactNode, useState, useRef } from 'react';
+import { MapRef } from 'react-map-gl';
 import TravelLogContext from './TravelLogContext';
 
 interface NewLogType {
@@ -13,6 +15,9 @@ interface ProviderProps {
 export default function TravelLogProvider({ children }: ProviderProps) {
   const [newLogMarker, setNewLogMarker] = useState<NewLogType | null>(null);
   const [sidebarVisible, setSidebarVisible] = useState<boolean>(false);
+  const [logsbarVisible, setLogsbarVisible] = useState<boolean>(false);
+  const [popupInfo, setPopupInfo] = useState<TravelLogTypeWithId | null>(null);
+  const mapRef = useRef<MapRef | null>(null);
 
   return (
     <TravelLogContext.Provider
@@ -21,6 +26,11 @@ export default function TravelLogProvider({ children }: ProviderProps) {
         setNewLogMarker,
         sidebarVisible,
         setSidebarVisible,
+        logsbarVisible,
+        setLogsbarVisible,
+        popupInfo,
+        setPopupInfo,
+        mapRef,
       }}
     >
       {children}

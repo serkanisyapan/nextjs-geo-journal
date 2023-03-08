@@ -1,10 +1,5 @@
-import { useContext, useState, useRef, useEffect } from 'react';
-import Map, {
-  Marker,
-  MarkerDragEvent,
-  MapRef,
-  MapLayerMouseEvent,
-} from 'react-map-gl';
+import { useContext, useEffect } from 'react';
+import Map, { Marker, MarkerDragEvent, MapLayerMouseEvent } from 'react-map-gl';
 import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
 import TravelLogContext from '@/context/TravelLogContext';
 import MapPin from './MapPin';
@@ -21,20 +16,21 @@ const ANKARA_COORDINATES = {
 };
 
 export default function TravelLogMap({ logs }: Props) {
-  const [popupInfo, setPopupInfo] = useState<TravelLogTypeWithId | null>(null);
-  const { newLogMarker, setNewLogMarker, sidebarVisible, setSidebarVisible } =
-    useContext(TravelLogContext);
-  const mapRef = useRef<MapRef>(null);
+  const {
+    popupInfo,
+    setPopupInfo,
+    newLogMarker,
+    setNewLogMarker,
+    sidebarVisible,
+    setSidebarVisible,
+    mapRef,
+  } = useContext(TravelLogContext);
   const lastLog = logs[logs.length - 1];
 
   function handleDragEnd(event: MarkerDragEvent) {
     if (!event.lngLat) return;
     setNewLogMarker(event.lngLat);
   }
-
-  const handlePopupClose = () => {
-    setPopupInfo(null);
-  };
 
   const handleMapClick = (event: MapLayerMouseEvent) => {
     if (popupInfo) return;
@@ -52,7 +48,7 @@ export default function TravelLogMap({ logs }: Props) {
       if (!getMapCenter) return;
       setNewLogMarker(getMapCenter);
     }
-  }, [sidebarVisible, newLogMarker, setNewLogMarker]);
+  }, [sidebarVisible, newLogMarker, setNewLogMarker, mapRef]);
 
   return (
     <Map
@@ -105,9 +101,7 @@ export default function TravelLogMap({ logs }: Props) {
           </Marker>
         );
       })}
-      {popupInfo && (
-        <LogPopup handlePopupClose={handlePopupClose} popupInfo={popupInfo} />
-      )}
+      {popupInfo && <LogPopup popupInfo={popupInfo} />}
     </Map>
   );
 }

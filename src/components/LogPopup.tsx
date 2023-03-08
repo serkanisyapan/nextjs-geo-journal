@@ -1,16 +1,15 @@
+import TravelLogContext from '@/context/TravelLogContext';
 import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
+import { useContext } from 'react';
 import { Popup } from 'react-map-gl';
 import PopupInfo from './PopupInfo';
 
 interface LogPopupTypes {
   popupInfo: TravelLogTypeWithId;
-  handlePopupClose: () => void;
 }
 
-export default function LogPopup({
-  popupInfo,
-  handlePopupClose,
-}: LogPopupTypes) {
+export default function LogPopup({ popupInfo }: LogPopupTypes) {
+  const { setPopupInfo } = useContext(TravelLogContext);
   return (
     <Popup
       closeOnClick={true}
@@ -25,7 +24,7 @@ export default function LogPopup({
       anchor="top"
       longitude={Number(popupInfo.longitude)}
       latitude={Number(popupInfo.latitude)}
-      onClose={handlePopupClose}
+      onClose={() => setPopupInfo(null)}
     >
       <PopupInfo popupInfo={popupInfo} />
     </Popup>

@@ -30,7 +30,7 @@
 * [x] When clicked '+ new log', put marker on center
 * [x] Change size of selected icon
 * [x] Style popup menu
-* List logs in sidebar, click to zoom
+* [x]List logs in sidebar, click to zoom
 * Set places you want to visit
 * Multiple at same location???
 * Next Auth...

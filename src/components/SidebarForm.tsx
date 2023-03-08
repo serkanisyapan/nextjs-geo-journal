@@ -7,7 +7,7 @@ export default function SidebarForm() {
 
   return (
     <>
-      <div className="fixed top-2 right-2 z-[999]">
+      <div className="fixed top-2 right-2 z-[997]">
         <button
           onClick={() => setSidebarVisible(true)}
           className="btn btn-info"
