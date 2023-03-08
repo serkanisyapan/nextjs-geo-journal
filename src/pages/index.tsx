@@ -20,8 +20,14 @@ export default function Home() {
         <title>Travel Log</title>
       </Head>
       <TravelLogProvider>
-        {loading ? <LoadingSpinner /> : <TravelLogMap logs={logs} />}
-        <SidebarForm />
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          <>
+            <TravelLogMap logs={logs} />
+            <SidebarForm />
+          </>
+        )}
       </TravelLogProvider>
     </>
   );

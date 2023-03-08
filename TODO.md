@@ -17,11 +17,11 @@
   * [x] Re-load map after create
   * [x] Show server errors in form
 * [x] Lock down with a api key
+* [x] Loading spinner...
 * [ ] DEPLOY!
   * [ ] Vercel
   * [ ] Mongo Atlas
 * [ ] Edit existing log
-* [ ] Loading spinner...
 * [ ] Cluster close points
 * [ ] Add map tiles attribution https://docs.mapbox.com/help/getting-started/attribution/#static--print
 
@@ -30,8 +30,8 @@
 * [x] When clicked '+ new log', put marker on center
 * [x] Change size of selected icon
 * [x] Style popup menu
+* List logs in sidebar, click to zoom
 * Set places you want to visit
 * Multiple at same location???
 * Next Auth...
 * Search for locations
-* List logs in sidebar, click to zoom

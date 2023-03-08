@@ -37,6 +37,7 @@ export default function TravelLogMap({ logs }: Props) {
   };
 
   const handleMapClick = (event: MapLayerMouseEvent) => {
+    if (popupInfo) return;
     setNewLogMarker(event.lngLat);
     setSidebarVisible(true);
     mapRef.current?.flyTo({
@@ -89,6 +90,11 @@ export default function TravelLogMap({ logs }: Props) {
             onClick={(e) => {
               e.originalEvent.stopPropagation();
               setPopupInfo(log);
+              mapRef.current?.flyTo({
+                // @ts-ignore
+                center: [e.target._lngLat.lng, e.target._lngLat.lat],
+                duration: 500,
+              });
             }}
             style={{ cursor: 'pointer' }}
           >

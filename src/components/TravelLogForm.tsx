@@ -9,7 +9,8 @@ import TravelLogContext from '@/context/TravelLogContext';
 import CloseButton from './CloseButton';
 
 export default function TravelLogForm() {
-  const [formError, setFormError] = useState('');
+  const [formError, setFormError] = useState<string>('');
+  const [sendingNewLog, setSendingNewLog] = useState<boolean>(false);
   const { newLogMarker, setSidebarVisible, setNewLogMarker } =
     useContext(TravelLogContext);
   const router = useRouter();
@@ -33,6 +34,7 @@ export default function TravelLogForm() {
 
   const onSubmit: SubmitHandler<TravelLogType> = async (data) => {
     try {
+      setSendingNewLog(true);
       const response = await fetch('/api/logs', {
         method: 'POST',
         headers: {
@@ -57,6 +59,7 @@ export default function TravelLogForm() {
         setFormError('');
       }, 1500);
     }
+    setSendingNewLog(false);
   };
 
   useEffect(() => {
@@ -121,8 +124,8 @@ export default function TravelLogForm() {
             </div>
           );
         })}
-        <button className="btn btn-info" type="submit">
-          Add Log
+        <button className="btn btn-info" type="submit" disabled={sendingNewLog}>
+          {!sendingNewLog ? 'Add Log' : <span>Loading...</span>}
         </button>
       </form>
     </>

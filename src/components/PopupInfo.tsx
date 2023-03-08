@@ -10,11 +10,13 @@ export default function PopupInfo({ popupInfo }: PopupProps) {
       <p className="text-lg font-bold mb-2">{popupInfo.title}</p>
       <div className="w-[280px] text-center">
         <figure className="mb-2">
-          <img
-            className="w-[280px] h-[160px] object-cover rounded-t-md"
-            src={popupInfo.image}
-            alt={popupInfo.title}
-          />
+          <picture>
+            <img
+              className="w-[280px] h-[160px] object-cover rounded-t-md"
+              src={popupInfo.image}
+              alt={popupInfo.title}
+            />
+          </picture>
           <figcaption className="p-1 text-base bg-black text-white">
             {popupInfo.rating}/10
           </figcaption>
