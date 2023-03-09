@@ -31,7 +31,7 @@
 * [x] Change size of selected icon
 * [x] Style popup menu
 * [x]List logs in sidebar, click to zoom
-* Set places you want to visit
+* [x]Set places you want to visit
 * Multiple at same location???
 * Next Auth...
 * Search for locations

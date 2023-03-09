@@ -77,6 +77,7 @@ export default function TravelLogMap({ logs }: Props) {
       )}
       {logs.map((log) => {
         const isSelectedLog = popupInfo?._id === log._id;
+        const isVisited = log.visited === 'Yes';
         return (
           <Marker
             key={`marker-${log._id}`}
@@ -95,7 +96,7 @@ export default function TravelLogMap({ logs }: Props) {
             style={{ cursor: 'pointer' }}
           >
             <MapPin
-              color={isSelectedLog ? '#FF785A' : 'white'}
+              color={isVisited ? '#8be9fc' : '#F51AA4'}
               size={isSelectedLog ? 44 : 32}
             />
           </Marker>

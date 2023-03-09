@@ -26,6 +26,11 @@ const formInputs: FormInput[] = [
     title: 'image',
   },
   {
+    label: 'Visited?',
+    type: 'select',
+    title: 'visited',
+  },
+  {
     label: 'Rating',
     type: 'number',
     title: 'rating',
