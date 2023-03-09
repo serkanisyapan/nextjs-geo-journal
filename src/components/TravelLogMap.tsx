@@ -42,6 +42,18 @@ export default function TravelLogMap({ logs }: Props) {
     });
   };
 
+  // if user changes filter while a popup is open that popup gets cleared
+  const clearPopupFiltered = (
+    popup: TravelLogTypeWithId
+  ): boolean | undefined => {
+    if (!popup) return undefined;
+    const logsID = logs.filter((log) => log._id === popup._id);
+    if (logsID.length) {
+      return true;
+    }
+    setPopupInfo(null);
+  };
+
   useEffect(() => {
     if (sidebarVisible && !newLogMarker) {
       const getMapCenter = mapRef.current?.getCenter();
@@ -102,7 +114,9 @@ export default function TravelLogMap({ logs }: Props) {
           </Marker>
         );
       })}
-      {popupInfo && <LogPopup popupInfo={popupInfo} />}
+      {popupInfo && clearPopupFiltered(popupInfo) && (
+        <LogPopup popupInfo={popupInfo} />
+      )}
     </Map>
   );
 }

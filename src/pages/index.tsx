@@ -1,3 +1,4 @@
+import { ChangeEvent, useState } from 'react';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import TravelLogMap from '@/components/TravelLogMap';
 import useFetchLogs from '@/hooks/useFetchLogs';
@@ -13,7 +14,22 @@ interface LogsType {
 }
 
 export default function Home() {
+  const [filterLogs, setFilterLogs] = useState<string>('');
   const { logs, loading }: LogsType = useFetchLogs();
+
+  const filteredLogs = logs.filter((log) => {
+    if (filterLogs === 'Visited') {
+      return log.visited === 'Yes';
+    }
+    if (filterLogs === 'Not Visited') {
+      return log.visited === 'No';
+    }
+    return log;
+  });
+
+  const handleFilterLogs = (event: ChangeEvent<HTMLSelectElement>) => {
+    setFilterLogs(event.target.value);
+  };
 
   return (
     <>
@@ -25,9 +41,13 @@ export default function Home() {
           <LoadingSpinner />
         ) : (
           <>
-            <TravelLogMap logs={logs} />
+            <TravelLogMap logs={filteredLogs} />
             <SidebarForm />
-            <SidebarLogs logs={logs} />
+            <SidebarLogs
+              logs={filteredLogs}
+              handleFilterLogs={handleFilterLogs}
+              filterLogs={filterLogs}
+            />
           </>
         )}
       </TravelLogProvider>

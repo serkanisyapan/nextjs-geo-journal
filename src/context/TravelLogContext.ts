@@ -15,7 +15,7 @@ const initialState = {
   logsbarVisible: false,
   setLogsbarVisible: () => false,
   popupInfo: null,
-  setPopupInfo: () => {},
+  setPopupInfo: () => null,
   mapRef: { current: null },
 };
 
