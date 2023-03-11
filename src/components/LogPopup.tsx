@@ -22,8 +22,8 @@ export default function LogPopup({ popupInfo }: LogPopupTypes) {
         margin: '0px',
       }}
       anchor="top"
-      longitude={Number(popupInfo.longitude)}
-      latitude={Number(popupInfo.latitude)}
+      longitude={popupInfo.longitude}
+      latitude={popupInfo.latitude}
       onClose={() => setPopupInfo(null)}
     >
       <PopupInfo popupInfo={popupInfo} />

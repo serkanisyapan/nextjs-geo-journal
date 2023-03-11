@@ -3,8 +3,8 @@ import Map, { Marker, MarkerDragEvent, MapLayerMouseEvent } from 'react-map-gl';
 import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
 import TravelLogContext from '@/context/TravelLogContext';
 import MapPin from './MapPin';
-import MapControls from './MapControls';
 import LogPopup from './LogPopup';
+import GeocoderControl from './GeocoderSearch';
 
 interface Props {
   logs: TravelLogTypeWithId[];
@@ -52,6 +52,7 @@ export default function TravelLogMap({ logs }: Props) {
       return true;
     }
     setPopupInfo(null);
+    return false;
   };
 
   useEffect(() => {
@@ -76,7 +77,11 @@ export default function TravelLogMap({ logs }: Props) {
       style={{ width: '100vw', height: '100vh' }}
       onClick={handleMapClick}
     >
-      <MapControls />
+      <GeocoderControl
+        mapboxAccessToken={`${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`}
+        position="top-left"
+        clearOnBlur={true}
+      />
       {newLogMarker && (
         <Marker
           draggable
