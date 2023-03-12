@@ -27,7 +27,7 @@ interface TravelLogContext {
   logsbarVisible: boolean;
   setLogsbarVisible: (isVisible: boolean) => any;
   popupInfo: TravelLogTypeWithId | null;
-  setPopupInfo: (log: TravelLogTypeWithId) => any;
+  setPopupInfo: (log: TravelLogTypeWithId | null) => any;
   mapRef: MutableRefObject<MapRef | null>;
 }
 

@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import Map, { Marker, MarkerDragEvent, MapLayerMouseEvent } from 'react-map-gl';
 import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
 import TravelLogContext from '@/context/TravelLogContext';
-import MapPin from './MapPin';
+import { MapPin } from './MapIcons';
 import LogPopup from './LogPopup';
 import GeocoderControl from './GeocoderSearch';
 
@@ -73,8 +73,8 @@ export default function TravelLogMap({ logs }: Props) {
       mapStyle="mapbox://styles/mapbox/dark-v9"
       reuseMaps={true}
       ref={mapRef}
-      mapboxAccessToken={`${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`}
       style={{ width: '100vw', height: '100vh' }}
+      mapboxAccessToken={`${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`}
       onClick={handleMapClick}
     >
       <GeocoderControl

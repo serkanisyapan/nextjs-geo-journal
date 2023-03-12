@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { TravelLogs, TravelLogValidator } from '@/models/TravelLogs';
 import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
+import { ObjectId } from 'mongodb';
 
 if (!process.env.API_KEY) {
   throw new Error('API key is missing in .env file.');
@@ -39,6 +40,14 @@ export default async function handler(
       case 'GET': {
         const logs = await TravelLogs.find().toArray();
         return res.status(200).json(logs);
+      }
+      case 'DELETE': {
+        const { logID } = req.body;
+        if (!logID) {
+          throw new ErrorWithStatusCode('No logs found.', 400);
+        }
+        await TravelLogs.deleteOne({ _id: new ObjectId(logID) });
+        return res.status(200).json({ message: 'Log is deleted.' });
       }
       default: {
         return res.status(405).json({ message: 'Method is not allowed.' });

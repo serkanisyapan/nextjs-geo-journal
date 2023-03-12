@@ -41,7 +41,7 @@ export default function GeocoderControl(props: GeocoderControlProps) {
             (result.geometry?.type === 'Point' && result.geometry.coordinates));
         if (location && props.marker) {
           setNewLogMarker({ lng: location[0], lat: location[1] });
-          setSidebarVisible(true)
+          setSidebarVisible(true);
         } else {
           setNewLogMarker(null);
         }
@@ -124,7 +124,7 @@ export default function GeocoderControl(props: GeocoderControlProps) {
     //   geocoder.setWorldview(props.worldview);
     // }
   }
-  return <div>hello world!</div>;
+  return <div className="invisible"></div>;
 }
 
 const noop = () => {};
