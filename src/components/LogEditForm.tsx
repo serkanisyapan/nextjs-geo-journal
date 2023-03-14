@@ -1,54 +1,43 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TravelLogValidator, TravelLogType } from '@/models/TravelLogValidator';
 import formInputs from '@/data/formInputs';
 import TravelLogContext from '@/context/TravelLogContext';
-import defaultDate from '@/utils/defaultDate';
-import CloseButton from './CloseButton';
 
-export default function TravelLogForm() {
+export default function LogEditForm() {
   const [formError, setFormError] = useState<string>('');
-  const [sendingNewLog, setSendingNewLog] = useState<boolean>(false);
-  const { newLogMarker, setSidebarVisible, setNewLogMarker } =
-    useContext(TravelLogContext);
+  const [updatingLog, setUpdateingLog] = useState<boolean>(false);
+  const { popupInfo } = useContext(TravelLogContext);
   const router = useRouter();
   const {
     register,
     handleSubmit,
-    setValue,
     reset,
     formState: { errors },
   } = useForm<TravelLogType>({
     resolver: zodResolver(TravelLogValidator),
     defaultValues: {
-      rating: 5,
-      visited: 'Yes',
-      latitude: newLogMarker?.lat,
-      longitude: newLogMarker?.lng,
-      // @ts-ignore
-      visitDate: defaultDate(),
-      apiKey: localStorage.getItem('apiKey') ?? '',
+      apiKey: localStorage.getItem('apiKey') || '',
+      ...popupInfo,
     },
   });
 
   const onSubmit: SubmitHandler<TravelLogType> = async (data) => {
     try {
-      setSendingNewLog(true);
+      setUpdateingLog(true);
       const response = await fetch('/api/logs', {
-        method: 'POST',
+        method: 'PATCH',
         headers: {
           'content-type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, logID: popupInfo?._id }),
       });
       if (response.ok) {
         localStorage.setItem('apiKey', data.apiKey);
         reset();
-        setSidebarVisible(false);
-        setNewLogMarker(null);
-        router.push({ pathname: '/', query: { name: 'add-log' } }, '/');
+        router.push({ pathname: '/', query: { name: 'update-log' } }, '/');
       } else {
         const json = await response.json();
         throw new Error(json.message);
@@ -60,14 +49,8 @@ export default function TravelLogForm() {
         setFormError('');
       }, 1500);
     }
-    setSendingNewLog(false);
+    setUpdateingLog(false);
   };
-
-  useEffect(() => {
-    if (!newLogMarker) return;
-    setValue('latitude', newLogMarker.lat);
-    setValue('longitude', newLogMarker.lng);
-  }, [newLogMarker, setValue]);
 
   const allInputs = formInputs.map((formInput) => {
     const { title, label, type } = formInput;
@@ -119,15 +102,10 @@ export default function TravelLogForm() {
   });
 
   return (
-    <>
-      <div className="text-right">
-        <CloseButton />
-      </div>
+    <div className="fixed h-full top-0 right-0 p-4 w-80 bg-base-100 text-base-content z-[999] overflow-y-auto">
       {formError && (
         <div className="alert alert-error shadow-lg my-2">
-          <div>
-            <span>{formError}</span>
-          </div>
+          <span>{formError}</span>
         </div>
       )}
       <form
@@ -135,10 +113,10 @@ export default function TravelLogForm() {
         onSubmit={handleSubmit(onSubmit)}
       >
         {allInputs}
-        <button className="btn btn-info" type="submit" disabled={sendingNewLog}>
-          {!sendingNewLog ? 'Add Log' : <span>Adding Log...</span>}
+        <button className="btn btn-info" type="submit" disabled={updatingLog}>
+          {!updatingLog ? 'Update Log' : <span>Updating Log...</span>}
         </button>
       </form>
-    </>
+    </div>
   );
 }

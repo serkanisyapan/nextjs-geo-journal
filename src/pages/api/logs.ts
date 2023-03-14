@@ -49,6 +49,25 @@ export default async function handler(
         await TravelLogs.deleteOne({ _id: new ObjectId(logID) });
         return res.status(200).json({ message: 'Log is deleted.' });
       }
+      case 'PATCH': {
+        const { logID } = req.body;
+        const objectLogID = new ObjectId(logID);
+        if (!logID) {
+          throw new ErrorWithStatusCode('No logs found.', 400);
+        }
+        if (req.body.apiKey !== process.env.API_KEY) {
+          throw new ErrorWithStatusCode('Unauthorized.', 401);
+        }
+        const validateUpdateLog = await TravelLogValidator.parseAsync(req.body);
+        // @ts-expect-error
+        delete validateUpdateLog.apiKey;
+        delete validateUpdateLog.logID;
+        await TravelLogs.updateOne(
+          { _id: objectLogID },
+          { $set: { ...validateUpdateLog } }
+        );
+        return res.status(200).json({ message: 'Log got updated.' });
+      }
       default: {
         return res.status(405).json({ message: 'Method is not allowed.' });
       }

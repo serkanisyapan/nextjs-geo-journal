@@ -1,9 +1,14 @@
 import { useContext, useEffect } from 'react';
-import Map, { Marker, MarkerDragEvent, MapLayerMouseEvent } from 'react-map-gl';
+import Map, {
+  Popup,
+  Marker,
+  MarkerDragEvent,
+  MapLayerMouseEvent,
+} from 'react-map-gl';
 import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
 import TravelLogContext from '@/context/TravelLogContext';
 import { MapPin } from './MapIcons';
-import LogPopup from './LogPopup';
+import PopupInfo from './PopupInfo';
 import GeocoderControl from './GeocoderSearch';
 
 interface Props {
@@ -56,12 +61,13 @@ export default function TravelLogMap({ logs }: Props) {
   };
 
   useEffect(() => {
+    if (popupInfo) return;
     if (sidebarVisible && !newLogMarker) {
       const getMapCenter = mapRef.current?.getCenter();
       if (!getMapCenter) return;
       setNewLogMarker(getMapCenter);
     }
-  }, [sidebarVisible, newLogMarker, setNewLogMarker, mapRef]);
+  }, [sidebarVisible, popupInfo, newLogMarker, setNewLogMarker, mapRef]);
 
   return (
     <Map
@@ -120,7 +126,23 @@ export default function TravelLogMap({ logs }: Props) {
         );
       })}
       {popupInfo && clearPopupFiltered(popupInfo) && (
-        <LogPopup popupInfo={popupInfo} />
+        <Popup
+          closeOnClick={true}
+          maxWidth="300px"
+          style={{
+            color: 'black',
+            fontSize: '24px',
+            fontFamily: 'monospace',
+            padding: '0px',
+            margin: '0px',
+          }}
+          anchor="top"
+          longitude={popupInfo.longitude}
+          latitude={popupInfo.latitude}
+          onClose={() => setPopupInfo(null)}
+        >
+          <PopupInfo />
+        </Popup>
       )}
     </Map>
   );

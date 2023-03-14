@@ -3,13 +3,17 @@ import { useContext } from 'react';
 import TravelLogForm from './TravelLogForm';
 
 export default function SidebarForm() {
-  const { sidebarVisible, setSidebarVisible } = useContext(TravelLogContext);
+  const { setPopupInfo, sidebarVisible, setSidebarVisible } =
+    useContext(TravelLogContext);
 
   return (
     <>
       <div className="fixed top-2 right-2 z-[997]">
         <button
-          onClick={() => setSidebarVisible(true)}
+          onClick={() => {
+            setPopupInfo(null);
+            setSidebarVisible(true);
+          }}
           className="btn btn-info"
         >
           + New Log

@@ -1,14 +1,15 @@
+import TravelLogContext from '@/context/TravelLogContext';
 import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { DeleteIcon } from './MapIcons';
+import { useContext, useState } from 'react';
+import { createPortal } from 'react-dom';
+import LogEditForm from './LogEditForm';
+import { DeleteIcon, EditIcon } from './MapIcons';
 
-interface PopupProps {
-  popupInfo: TravelLogTypeWithId;
-}
-
-export default function PopupInfo({ popupInfo }: PopupProps) {
+export default function PopupInfo() {
   const [popupState, setPopupState] = useState<string>('');
+  const [updateLogForm, setUpdateLogForm] = useState<boolean>(false);
+  const { popupInfo } = useContext(TravelLogContext);
   const router = useRouter();
 
   const handleDeleteLog = async (log: TravelLogTypeWithId) => {
@@ -37,6 +38,8 @@ export default function PopupInfo({ popupInfo }: PopupProps) {
 
   return (
     <>
+      {updateLogForm && createPortal(<LogEditForm />, document.body)}
+
       {popupState && (
         <div className="alert alert-error shadow-lg my-2">
           <div>
@@ -44,13 +47,13 @@ export default function PopupInfo({ popupInfo }: PopupProps) {
           </div>
         </div>
       )}
-      <div className="flex flex-row gap-1">
-        <p className="text-lg font-bold mb-2">{popupInfo.title}</p>
+      <div className="flex flex-col mb-2">
+        <p className="text-lg font-bold">{popupInfo?.title}</p>
         <div>
-          <button
-            className="btn-xs rounded-md"
-            onClick={() => handleDeleteLog(popupInfo)}
-          >
+          <button onClick={() => setUpdateLogForm(true)} className="btn-xs">
+            <EditIcon />
+          </button>
+          <button className="btn-xs" onClick={() => handleDeleteLog(popupInfo)}>
             <DeleteIcon />
           </button>
         </div>
@@ -60,17 +63,17 @@ export default function PopupInfo({ popupInfo }: PopupProps) {
           <picture>
             <img
               className="w-[280px] h-[160px] object-cover rounded-t-md"
-              src={popupInfo.image}
-              alt={popupInfo.title}
+              src={popupInfo?.image}
+              alt={popupInfo?.title}
             />
           </picture>
           <figcaption className="p-1 text-base bg-black text-white">
-            {popupInfo.rating}/10
+            {popupInfo?.rating}/10
           </figcaption>
         </figure>
       </div>
       <div className="bg-gray-800 p-2 text-white rounded-md">
-        <p className="mb-2 text-lg">{popupInfo.description}</p>
+        <p className="mb-2 text-lg">{popupInfo?.description}</p>
         <p className="italic text-base">
           {new Date(popupInfo.visitDate.toString()).toLocaleDateString()}
         </p>

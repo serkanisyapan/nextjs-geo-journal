@@ -18,12 +18,12 @@
   - [x] Show server errors in form
 - [x] Lock down with a api key
 - [x] Loading spinner...
+- [x] Delete existing log
+- [x] Edit existing log
+- [ ] Cluster close points
 - [ ] DEPLOY!
   - [ ] Vercel
   - [ ] Mongo Atlas
-- [ ] Edit existing log
-- [ ] Cluster close points
-- [ ] Add map tiles attribution https://docs.mapbox.com/help/getting-started/attribution/#static--print
 
 # Other TODO's
 
