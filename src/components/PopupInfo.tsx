@@ -13,7 +13,7 @@ interface Props {
 export default function PopupInfo({ handleUpdateLog, handleDeleteLog }: Props) {
   const [popupState, setPopupState] = useState<string>('');
   const [updateLogForm, setUpdateLogForm] = useState<boolean>(false);
-  const { popupInfo } = useContext(TravelLogContext);
+  const { popupInfo, setAlert } = useContext(TravelLogContext);
 
   const deleteLogReq = async (log: TravelLogTypeWithId) => {
     try {
@@ -25,6 +25,7 @@ export default function PopupInfo({ handleUpdateLog, handleDeleteLog }: Props) {
         body: JSON.stringify({ logID: log._id }),
       });
       if (response.ok) {
+        setAlert('Log got deleted succesfully.');
         const id = log._id.toString();
         handleDeleteLog(id);
       } else {

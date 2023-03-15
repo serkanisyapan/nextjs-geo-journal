@@ -10,6 +10,7 @@ import TravelLogContext from '@/context/TravelLogContext';
 import { MapPin } from './MapIcons';
 import PopupInfo from './PopupInfo';
 import GeocoderControl from './GeocoderSearch';
+import AlertBox from './AlertBox';
 
 interface Props {
   logs: TravelLogTypeWithId[];
@@ -34,6 +35,7 @@ export default function TravelLogMap({
     setNewLogMarker,
     sidebarVisible,
     setSidebarVisible,
+    alert,
     mapRef,
   } = useContext(TravelLogContext);
   const lastLog = logs[logs.length - 1];
@@ -89,6 +91,7 @@ export default function TravelLogMap({
       mapboxAccessToken={`${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`}
       onClick={handleMapClick}
     >
+      {alert && <AlertBox alertMessage={alert} />}
       <GeocoderControl
         mapboxAccessToken={`${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`}
         position="top-left"

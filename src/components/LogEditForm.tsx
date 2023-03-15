@@ -16,7 +16,7 @@ interface Props {
 export default function LogEditForm({ handleUpdateLog }: Props) {
   const [formError, setFormError] = useState<string>('');
   const [updatingLog, setUpdateingLog] = useState<boolean>(false);
-  const { popupInfo, setPopupInfo } = useContext(TravelLogContext);
+  const { popupInfo, setPopupInfo, setAlert } = useContext(TravelLogContext);
   const {
     register,
     handleSubmit,
@@ -40,6 +40,7 @@ export default function LogEditForm({ handleUpdateLog }: Props) {
         body: JSON.stringify({ ...data, logID: popupInfo?._id }),
       });
       if (response.ok) {
+        setAlert('Log got updated succesfully.');
         const dataWithId: any = { ...data, _id: popupInfo?._id };
         localStorage.setItem('apiKey', data.apiKey);
         handleUpdateLog(dataWithId);

@@ -1,5 +1,5 @@
 import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
-import { ReactNode, useState, useRef } from 'react';
+import { ReactNode, useState, useRef, useEffect } from 'react';
 import { MapRef } from 'react-map-gl';
 import TravelLogContext from './TravelLogContext';
 
@@ -17,7 +17,14 @@ export default function TravelLogProvider({ children }: ProviderProps) {
   const [sidebarVisible, setSidebarVisible] = useState<boolean>(false);
   const [logsbarVisible, setLogsbarVisible] = useState<boolean>(false);
   const [popupInfo, setPopupInfo] = useState<TravelLogTypeWithId | null>(null);
+  const [alert, setAlert] = useState<string>('');
   const mapRef = useRef<MapRef | null>(null);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setAlert('');
+    }, 1500);
+  }, [alert]);
 
   return (
     <TravelLogContext.Provider
@@ -30,6 +37,8 @@ export default function TravelLogProvider({ children }: ProviderProps) {
         setLogsbarVisible,
         popupInfo,
         setPopupInfo,
+        alert,
+        setAlert,
         mapRef,
       }}
     >

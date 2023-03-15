@@ -16,6 +16,8 @@ const initialState = {
   setLogsbarVisible: () => false,
   popupInfo: null,
   setPopupInfo: () => null,
+  alert: '',
+  setAlert: () => '',
   mapRef: { current: null },
 };
 
@@ -28,6 +30,8 @@ interface TravelLogContext {
   setLogsbarVisible: (isVisible: boolean) => any;
   popupInfo: TravelLogTypeWithId | null;
   setPopupInfo: (log: TravelLogTypeWithId | null) => any;
+  alert: string | '';
+  setAlert: (value: string) => void;
   mapRef: MutableRefObject<MapRef | null>;
 }
 
