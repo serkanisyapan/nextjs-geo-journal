@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
 
 export default function useFetchLogs() {
-  const [logs, setLogs] = useState([]);
+  const [logs, setLogs] = useState<TravelLogTypeWithId[] | []>([]);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -16,5 +17,5 @@ export default function useFetchLogs() {
       });
   }, [router.query]);
 
-  return { logs, loading };
+  return { logs, loading, setLogs };
 }

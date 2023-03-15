@@ -13,6 +13,8 @@ import GeocoderControl from './GeocoderSearch';
 
 interface Props {
   logs: TravelLogTypeWithId[];
+  handleUpdateLog: (data: TravelLogTypeWithId) => void;
+  handleDeleteLog: (logID: string) => void;
 }
 
 const ANKARA_COORDINATES = {
@@ -20,7 +22,11 @@ const ANKARA_COORDINATES = {
   longitude: 32.84854923915691,
 };
 
-export default function TravelLogMap({ logs }: Props) {
+export default function TravelLogMap({
+  handleUpdateLog,
+  handleDeleteLog,
+  logs,
+}: Props) {
   const {
     popupInfo,
     setPopupInfo,
@@ -141,7 +147,10 @@ export default function TravelLogMap({ logs }: Props) {
           latitude={popupInfo.latitude}
           onClose={() => setPopupInfo(null)}
         >
-          <PopupInfo />
+          <PopupInfo
+            handleDeleteLog={handleDeleteLog}
+            handleUpdateLog={handleUpdateLog}
+          />
         </Popup>
       )}
     </Map>

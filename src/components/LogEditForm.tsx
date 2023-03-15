@@ -1,20 +1,25 @@
 import { useContext, useState } from 'react';
-import { useRouter } from 'next/router';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { TravelLogValidator, TravelLogType } from '@/models/TravelLogValidator';
+import {
+  TravelLogValidator,
+  TravelLogType,
+  TravelLogTypeWithId,
+} from '@/models/TravelLogValidator';
 import formInputs from '@/data/formInputs';
 import TravelLogContext from '@/context/TravelLogContext';
 
-export default function LogEditForm() {
+interface Props {
+  handleUpdateLog: (data: TravelLogTypeWithId) => void;
+}
+
+export default function LogEditForm({ handleUpdateLog }: Props) {
   const [formError, setFormError] = useState<string>('');
   const [updatingLog, setUpdateingLog] = useState<boolean>(false);
-  const { popupInfo } = useContext(TravelLogContext);
-  const router = useRouter();
+  const { popupInfo, setPopupInfo } = useContext(TravelLogContext);
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<TravelLogType>({
     resolver: zodResolver(TravelLogValidator),
@@ -35,9 +40,10 @@ export default function LogEditForm() {
         body: JSON.stringify({ ...data, logID: popupInfo?._id }),
       });
       if (response.ok) {
+        const dataWithId: any = { ...data, _id: popupInfo?._id };
         localStorage.setItem('apiKey', data.apiKey);
-        reset();
-        router.push({ pathname: '/', query: { name: 'update-log' } }, '/');
+        handleUpdateLog(dataWithId);
+        setPopupInfo(null);
       } else {
         const json = await response.json();
         throw new Error(json.message);

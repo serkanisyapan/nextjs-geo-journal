@@ -11,11 +11,31 @@ import SidebarLogs from '@/components/SidebarLogs';
 interface LogsType {
   logs: TravelLogTypeWithId[];
   loading: boolean;
+  setLogs: (logs: TravelLogTypeWithId[]) => void;
 }
 
 export default function Home() {
   const [filterLogs, setFilterLogs] = useState<string>('');
-  const { logs, loading }: LogsType = useFetchLogs();
+  const { logs, setLogs, loading }: LogsType = useFetchLogs();
+
+  const handleFilterLogs = (event: ChangeEvent<HTMLSelectElement>) => {
+    setFilterLogs(event.target.value);
+  };
+
+  const handleUpdateLog = (data: TravelLogTypeWithId) => {
+    const updateLogs = logs.map((log) => {
+      if (log._id === data._id) {
+        return { ...data };
+      }
+      return log;
+    });
+    setLogs(updateLogs);
+  };
+
+  const handleDeleteLog = (logID: string) => {
+    const deleteLog = logs.filter((log) => log._id.toString() !== logID);
+    setLogs(deleteLog);
+  };
 
   const filteredLogs = logs.filter((log) => {
     if (filterLogs === 'Visited') {
@@ -27,10 +47,6 @@ export default function Home() {
     return log;
   });
 
-  const handleFilterLogs = (event: ChangeEvent<HTMLSelectElement>) => {
-    setFilterLogs(event.target.value);
-  };
-
   return (
     <>
       <Head>
@@ -41,7 +57,11 @@ export default function Home() {
           <LoadingSpinner />
         ) : (
           <>
-            <TravelLogMap logs={filteredLogs} />
+            <TravelLogMap
+              handleDeleteLog={handleDeleteLog}
+              handleUpdateLog={handleUpdateLog}
+              logs={filteredLogs}
+            />
             <SidebarForm />
             <SidebarLogs
               logs={filteredLogs}

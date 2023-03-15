@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useContext } from 'react';
 import { useControl, MarkerProps, ControlPosition } from 'react-map-gl';
 import MapboxGeocoder, { GeocoderOptions } from '@mapbox/mapbox-gl-geocoder';

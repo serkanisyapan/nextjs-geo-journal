@@ -1,18 +1,21 @@
 import TravelLogContext from '@/context/TravelLogContext';
 import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
-import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
 import { createPortal } from 'react-dom';
 import LogEditForm from './LogEditForm';
 import { DeleteIcon, EditIcon } from './MapIcons';
 
-export default function PopupInfo() {
+interface Props {
+  handleUpdateLog: (data: TravelLogTypeWithId) => void;
+  handleDeleteLog: (logID: string) => void;
+}
+
+export default function PopupInfo({ handleUpdateLog, handleDeleteLog }: Props) {
   const [popupState, setPopupState] = useState<string>('');
   const [updateLogForm, setUpdateLogForm] = useState<boolean>(false);
   const { popupInfo } = useContext(TravelLogContext);
-  const router = useRouter();
 
-  const handleDeleteLog = async (log: TravelLogTypeWithId) => {
+  const deleteLogReq = async (log: TravelLogTypeWithId) => {
     try {
       const response = await fetch('/api/logs', {
         method: 'DELETE',
@@ -22,7 +25,8 @@ export default function PopupInfo() {
         body: JSON.stringify({ logID: log._id }),
       });
       if (response.ok) {
-        router.push({ pathname: '/', query: { name: 'remove-log' } }, '/');
+        const id = log._id.toString();
+        handleDeleteLog(id);
       } else {
         const json = await response.json();
         throw new Error(json.message);
@@ -38,7 +42,11 @@ export default function PopupInfo() {
 
   return (
     <>
-      {updateLogForm && createPortal(<LogEditForm />, document.body)}
+      {updateLogForm &&
+        createPortal(
+          <LogEditForm handleUpdateLog={handleUpdateLog} />,
+          document.body
+        )}
 
       {popupState && (
         <div className="alert alert-error shadow-lg my-2">
@@ -53,7 +61,7 @@ export default function PopupInfo() {
           <button onClick={() => setUpdateLogForm(true)} className="btn-xs">
             <EditIcon />
           </button>
-          <button className="btn-xs" onClick={() => handleDeleteLog(popupInfo)}>
+          <button className="btn-xs" onClick={() => deleteLogReq(popupInfo)}>
             <DeleteIcon />
           </button>
         </div>
