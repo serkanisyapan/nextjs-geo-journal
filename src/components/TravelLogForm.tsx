@@ -3,9 +3,9 @@ import { useRouter } from 'next/router';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TravelLogValidator, TravelLogType } from '@/models/TravelLogValidator';
-import formInputs from '@/data/formInputs';
 import TravelLogContext from '@/context/TravelLogContext';
 import CloseButton from './CloseButton';
+import FormInputs from './FormInputs';
 
 export default function TravelLogForm() {
   const [formError, setFormError] = useState<string>('');
@@ -68,55 +68,6 @@ export default function TravelLogForm() {
     setValue('longitude', newLogMarker.lng);
   }, [newLogMarker, setValue]);
 
-  const allInputs = formInputs.map((formInput) => {
-    const { title, label, type } = formInput;
-    const registerProperty = title as keyof TravelLogType;
-    const titleProperty = title as keyof typeof errors;
-    return (
-      <div key={label} className="form-control w-full">
-        <label className="label">
-          <span className="label-text">{label}</span>
-        </label>
-        {type === 'textarea' && (
-          <textarea
-            className={`textarea textarea-bordered ${
-              errors.description ? 'textarea-error' : ''
-            }`}
-            {...register(registerProperty)}
-          ></textarea>
-        )}
-        {(title === 'latitude' || title === 'longitude') && (
-          <input
-            className="input input-bordered w-full"
-            type={type}
-            disabled
-            {...register(registerProperty)}
-          />
-        )}
-        {type === 'select' && (
-          <select className="select w-full" {...register('visited')}>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
-        )}
-        {(title === 'apiKey' ||
-          title === 'title' ||
-          title === 'image' ||
-          title === 'rating' ||
-          title === 'visitDate') && (
-          <input
-            className={`input input-bordered ${
-              errors[titleProperty] ? 'input-error' : ''
-            }`}
-            type={type}
-            {...register(registerProperty)}
-          />
-        )}
-        {errors[titleProperty] && <span>{errors[titleProperty]?.message}</span>}
-      </div>
-    );
-  });
-
   return (
     <>
       <div className="text-right">
@@ -133,7 +84,7 @@ export default function TravelLogForm() {
         className="max-w-lg m-auto flex flex-col gap-2 my-4 mx-2"
         onSubmit={handleSubmit(onSubmit)}
       >
-        {allInputs}
+        <FormInputs errors={errors} register={register} />
         <button className="btn btn-info" type="submit" disabled={sendingNewLog}>
           {!sendingNewLog ? 'Add Log' : <span>Adding Log...</span>}
         </button>

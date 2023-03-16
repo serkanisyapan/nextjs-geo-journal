@@ -117,12 +117,14 @@ export default function TravelLogMap({
             latitude={log.latitude}
             anchor="bottom"
             onClick={(e) => {
+              const getMapZoom = mapRef.current?.getZoom();
               e.originalEvent.stopPropagation();
               setPopupInfo(log);
               mapRef.current?.flyTo({
                 // @ts-ignore
                 center: [e.target._lngLat.lng, e.target._lngLat.lat],
-                duration: 500,
+                duration: 800,
+                zoom: getMapZoom && getMapZoom < 12 ? 12 : getMapZoom,
               });
             }}
             style={{ cursor: 'pointer' }}

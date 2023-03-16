@@ -6,8 +6,8 @@ import {
   TravelLogType,
   TravelLogTypeWithId,
 } from '@/models/TravelLogValidator';
-import formInputs from '@/data/formInputs';
 import TravelLogContext from '@/context/TravelLogContext';
+import FormInputs from './FormInputs';
 
 interface Props {
   handleUpdateLog: (data: TravelLogTypeWithId) => void;
@@ -60,58 +60,16 @@ export default function LogEditForm({ handleUpdateLog }: Props) {
     setUpdateingLog(false);
   };
 
-  const allInputs = formInputs.map((formInput) => {
-    const { title, label, type } = formInput;
-    const registerProperty = title as keyof TravelLogType;
-    const titleProperty = title as keyof typeof errors;
-    return (
-      <div key={label} className="form-control w-full">
-        <label className="label">
-          <span className="label-text">{label}</span>
-        </label>
-        {type === 'textarea' && (
-          <textarea
-            className={`textarea textarea-bordered ${
-              errors.description ? 'textarea-error' : ''
-            }`}
-            {...register(registerProperty)}
-          ></textarea>
-        )}
-        {(title === 'latitude' || title === 'longitude') && (
-          <input
-            className="input input-bordered w-full"
-            type={type}
-            disabled
-            {...register(registerProperty)}
-          />
-        )}
-        {type === 'select' && (
-          <select className="select w-full" {...register('visited')}>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
-        )}
-        {(title === 'apiKey' ||
-          title === 'title' ||
-          title === 'image' ||
-          title === 'rating' ||
-          title === 'visitDate') && (
-          <input
-            className={`input input-bordered ${
-              errors[titleProperty] ? 'input-error' : ''
-            }`}
-            type={type}
-            {...register(registerProperty)}
-          />
-        )}
-        {errors[titleProperty] && <span>{errors[titleProperty]?.message}</span>}
-      </div>
-    );
-  });
-
   useEffect(() => {
-    // @ts-ignore
-    setValue('visitDate', popupInfo?.visitDate.substring(0, 10));
+    const visitDateValue = () => {
+      if (typeof popupInfo?.visitDate === 'string') {
+        // @ts-ignore
+        return popupInfo?.visitDate.substring(0, 10);
+      }
+      return popupInfo?.visitDate.toISOString().substring(0, 10);
+    };
+
+    setValue('visitDate', visitDateValue());
   }, [popupInfo, setValue]);
 
   return (
@@ -125,7 +83,7 @@ export default function LogEditForm({ handleUpdateLog }: Props) {
         className="max-w-lg m-auto flex flex-col gap-2 my-4 mx-2"
         onSubmit={handleSubmit(onSubmit)}
       >
-        {allInputs}
+        <FormInputs errors={errors} register={register} />
         <button className="btn btn-info" type="submit" disabled={updatingLog}>
           {!updatingLog ? 'Update Log' : <span>Updating Log...</span>}
         </button>

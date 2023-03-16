@@ -31,7 +31,7 @@ const formInputs: FormInput[] = [
     title: 'visited',
   },
   {
-    label: 'Rating',
+    label: 'Rating (1-10)',
     type: 'number',
     title: 'rating',
   },
