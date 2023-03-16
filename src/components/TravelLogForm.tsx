@@ -5,7 +5,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { TravelLogValidator, TravelLogType } from '@/models/TravelLogValidator';
 import formInputs from '@/data/formInputs';
 import TravelLogContext from '@/context/TravelLogContext';
-import defaultDate from '@/utils/defaultDate';
 import CloseButton from './CloseButton';
 
 export default function TravelLogForm() {
@@ -28,7 +27,7 @@ export default function TravelLogForm() {
       latitude: newLogMarker?.lat,
       longitude: newLogMarker?.lng,
       // @ts-ignore
-      visitDate: defaultDate(),
+      visitDate: new Date().toISOString().substring(0, 10),
       apiKey: localStorage.getItem('apiKey') ?? '',
     },
   });

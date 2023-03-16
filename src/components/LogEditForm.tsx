@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -20,6 +20,7 @@ export default function LogEditForm({ handleUpdateLog }: Props) {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<TravelLogType>({
     resolver: zodResolver(TravelLogValidator),
@@ -107,6 +108,11 @@ export default function LogEditForm({ handleUpdateLog }: Props) {
       </div>
     );
   });
+
+  useEffect(() => {
+    // @ts-ignore
+    setValue('visitDate', popupInfo?.visitDate.substring(0, 10));
+  }, [popupInfo, setValue]);
 
   return (
     <div className="fixed h-full top-0 right-0 p-4 w-80 bg-base-100 text-base-content z-[999] overflow-y-auto">

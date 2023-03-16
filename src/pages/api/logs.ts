@@ -61,6 +61,7 @@ export default async function handler(
         const validateUpdateLog = await TravelLogValidator.parseAsync(req.body);
         // @ts-expect-error
         delete validateUpdateLog.apiKey;
+        // @ts-expect-error
         delete validateUpdateLog.logID;
         await TravelLogs.updateOne(
           { _id: objectLogID },
