@@ -9,14 +9,11 @@ import {
 import TravelLogContext from '@/context/TravelLogContext';
 import FormInputs from './FormInputs';
 
-interface Props {
-  handleUpdateLog: (data: TravelLogTypeWithId) => void;
-}
-
-export default function LogEditForm({ handleUpdateLog }: Props) {
+export default function LogEditForm() {
   const [formError, setFormError] = useState<string>('');
   const [updatingLog, setUpdateingLog] = useState<boolean>(false);
-  const { popupInfo, setPopupInfo, setAlert } = useContext(TravelLogContext);
+  const { logs, setLogs, popupInfo, setPopupInfo, setAlert } =
+    useContext(TravelLogContext);
   const {
     register,
     handleSubmit,
@@ -29,6 +26,16 @@ export default function LogEditForm({ handleUpdateLog }: Props) {
       ...popupInfo,
     },
   });
+
+  const handleUpdateLog = (data: TravelLogTypeWithId) => {
+    const updateLogs = logs.map((log) => {
+      if (log._id === data._id) {
+        return { ...data };
+      }
+      return log;
+    });
+    setLogs(updateLogs);
+  };
 
   const onSubmit: SubmitHandler<TravelLogType> = async (data) => {
     try {

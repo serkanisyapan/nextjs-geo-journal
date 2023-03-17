@@ -8,6 +8,11 @@ interface NewLogType {
 }
 
 const initialState = {
+  logs: [],
+  filteredLogs: [],
+  setLogs: () => [],
+  filterLogs: '',
+  setFilterLogs: () => '',
   newLogMarker: null,
   setNewLogMarker: () => {},
   sidebarVisible: false,
@@ -22,6 +27,11 @@ const initialState = {
 };
 
 interface TravelLogContext {
+  logs: TravelLogTypeWithId[];
+  filteredLogs: TravelLogTypeWithId[];
+  setLogs: (logs: TravelLogTypeWithId[] | []) => void;
+  filterLogs: string | '';
+  setFilterLogs: (evt: string) => any;
   newLogMarker: NewLogType | null;
   setNewLogMarker: (coordinates: NewLogType | null) => void;
   sidebarVisible: boolean;

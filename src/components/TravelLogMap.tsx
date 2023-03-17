@@ -12,23 +12,15 @@ import PopupInfo from './PopupInfo';
 import GeocoderControl from './GeocoderSearch';
 import AlertBox from './AlertBox';
 
-interface Props {
-  logs: TravelLogTypeWithId[];
-  handleUpdateLog: (data: TravelLogTypeWithId) => void;
-  handleDeleteLog: (logID: string) => void;
-}
-
 const ANKARA_COORDINATES = {
   latitude: 39.944235279643806,
   longitude: 32.84854923915691,
 };
 
-export default function TravelLogMap({
-  handleUpdateLog,
-  handleDeleteLog,
-  logs,
-}: Props) {
+export default function TravelLogMap() {
   const {
+    logs,
+    filteredLogs,
     popupInfo,
     setPopupInfo,
     newLogMarker,
@@ -38,7 +30,6 @@ export default function TravelLogMap({
     alert,
     mapRef,
   } = useContext(TravelLogContext);
-  const lastLog = logs[logs.length - 1];
 
   function handleDragEnd(event: MarkerDragEvent) {
     if (!event.lngLat) return;
@@ -60,7 +51,7 @@ export default function TravelLogMap({
     popup: TravelLogTypeWithId
   ): boolean | undefined => {
     if (!popup) return undefined;
-    const logsID = logs.filter((log) => log._id === popup._id);
+    const logsID = filteredLogs.filter((log) => log._id === popup._id);
     if (logsID.length) {
       return true;
     }
@@ -77,12 +68,21 @@ export default function TravelLogMap({
     }
   }, [sidebarVisible, popupInfo, newLogMarker, setNewLogMarker, mapRef]);
 
+  useEffect(() => {
+    const lastLog = logs[logs.length - 1];
+    mapRef.current?.flyTo({
+      center: [lastLog.longitude, lastLog.latitude],
+      zoom: 8,
+      duration: 400,
+    });
+  }, [logs, mapRef]);
+
   return (
     <Map
       initialViewState={{
-        longitude: lastLog?.longitude || ANKARA_COORDINATES.longitude,
-        latitude: lastLog?.latitude || ANKARA_COORDINATES.latitude,
-        zoom: 10,
+        longitude: ANKARA_COORDINATES.longitude,
+        latitude: ANKARA_COORDINATES.latitude,
+        zoom: 5,
       }}
       mapStyle="mapbox://styles/mapbox/dark-v9"
       reuseMaps={true}
@@ -107,7 +107,7 @@ export default function TravelLogMap({
           <MapPin color="#38E54D" size={44} />
         </Marker>
       )}
-      {logs.map((log) => {
+      {filteredLogs.map((log) => {
         const isSelectedLog = popupInfo?._id === log._id;
         const isVisited = log.visited === 'Yes';
         return (
@@ -124,7 +124,7 @@ export default function TravelLogMap({
                 // @ts-ignore
                 center: [e.target._lngLat.lng, e.target._lngLat.lat],
                 duration: 800,
-                zoom: getMapZoom && getMapZoom < 12 ? 12 : getMapZoom,
+                zoom: getMapZoom && getMapZoom < 8 ? 8 : getMapZoom,
               });
             }}
             style={{ cursor: 'pointer' }}
@@ -152,10 +152,7 @@ export default function TravelLogMap({
           latitude={popupInfo.latitude}
           onClose={() => setPopupInfo(null)}
         >
-          <PopupInfo
-            handleDeleteLog={handleDeleteLog}
-            handleUpdateLog={handleUpdateLog}
-          />
+          <PopupInfo popupInfo={popupInfo} />
         </Popup>
       )}
     </Map>

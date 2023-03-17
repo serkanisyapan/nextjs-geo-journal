@@ -1,3 +1,4 @@
+import useFetchLogs from '@/hooks/useFetchLogs';
 import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
 import { ReactNode, useState, useRef, useEffect } from 'react';
 import { MapRef } from 'react-map-gl';
@@ -13,12 +14,24 @@ interface ProviderProps {
 }
 
 export default function TravelLogProvider({ children }: ProviderProps) {
+  const { logs, setLogs } = useFetchLogs();
+  const [filterLogs, setFilterLogs] = useState<string>('');
   const [newLogMarker, setNewLogMarker] = useState<NewLogType | null>(null);
   const [sidebarVisible, setSidebarVisible] = useState<boolean>(false);
   const [logsbarVisible, setLogsbarVisible] = useState<boolean>(false);
   const [popupInfo, setPopupInfo] = useState<TravelLogTypeWithId | null>(null);
   const [alert, setAlert] = useState<string>('');
   const mapRef = useRef<MapRef | null>(null);
+
+  const filteredLogs = logs.filter((log) => {
+    if (filterLogs === 'Visited') {
+      return log.visited === 'Yes';
+    }
+    if (filterLogs === 'Not Visited') {
+      return log.visited === 'No';
+    }
+    return log;
+  });
 
   useEffect(() => {
     setTimeout(() => {
@@ -29,6 +42,11 @@ export default function TravelLogProvider({ children }: ProviderProps) {
   return (
     <TravelLogContext.Provider
       value={{
+        logs,
+        filteredLogs,
+        setLogs,
+        filterLogs,
+        setFilterLogs,
         newLogMarker,
         setNewLogMarker,
         sidebarVisible,

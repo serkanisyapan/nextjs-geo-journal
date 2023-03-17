@@ -1,20 +1,17 @@
-import { ChangeEvent, useContext } from 'react';
-import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
+import { useContext } from 'react';
 import TravelLogContext from '@/context/TravelLogContext';
 import CloseButton from './CloseButton';
 
-interface SidebarLogsProps {
-  logs: TravelLogTypeWithId[];
-  filterLogs: string;
-  handleFilterLogs: (event: ChangeEvent<HTMLSelectElement>) => void;
-}
-export default function SidebarLogs({
-  logs,
-  handleFilterLogs,
-  filterLogs,
-}: SidebarLogsProps) {
-  const { logsbarVisible, setLogsbarVisible, mapRef, setPopupInfo } =
-    useContext(TravelLogContext);
+export default function SidebarLogs() {
+  const {
+    filteredLogs,
+    filterLogs,
+    setFilterLogs,
+    logsbarVisible,
+    setLogsbarVisible,
+    mapRef,
+    setPopupInfo,
+  } = useContext(TravelLogContext);
 
   const shortenDescription = (description: string) => {
     return description.split('').slice(0, 30).join('');
@@ -35,7 +32,7 @@ export default function SidebarLogs({
           <div className="flex justify-between items-center mb-6">
             <select
               className="select"
-              onChange={(event) => handleFilterLogs(event)}
+              onChange={(event) => setFilterLogs(event.target.value)}
               defaultValue={filterLogs}
             >
               <option value="">---</option>
@@ -45,7 +42,7 @@ export default function SidebarLogs({
             <CloseButton />
           </div>
           <div className="flex flex-col gap-3 my-3">
-            {logs.map((log) => (
+            {filteredLogs.map((log) => (
               <div
                 onClick={() => {
                   mapRef.current?.flyTo({

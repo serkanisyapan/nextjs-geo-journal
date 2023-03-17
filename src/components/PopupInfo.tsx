@@ -6,14 +6,18 @@ import LogEditForm from './LogEditForm';
 import { DeleteIcon, EditIcon } from './MapIcons';
 
 interface Props {
-  handleUpdateLog: (data: TravelLogTypeWithId) => void;
-  handleDeleteLog: (logID: string) => void;
+  popupInfo: TravelLogTypeWithId;
 }
 
-export default function PopupInfo({ handleUpdateLog, handleDeleteLog }: Props) {
+export default function PopupInfo({ popupInfo }: Props) {
   const [popupState, setPopupState] = useState<string>('');
   const [updateLogForm, setUpdateLogForm] = useState<boolean>(false);
-  const { popupInfo, setAlert } = useContext(TravelLogContext);
+  const { logs, setLogs, setAlert } = useContext(TravelLogContext);
+
+  const handleDeleteLog = (logID: string) => {
+    const deleteLog = logs.filter((log) => log._id.toString() !== logID);
+    setLogs(deleteLog);
+  };
 
   const deleteLogReq = async (log: TravelLogTypeWithId) => {
     try {
@@ -43,11 +47,7 @@ export default function PopupInfo({ handleUpdateLog, handleDeleteLog }: Props) {
 
   return (
     <>
-      {updateLogForm &&
-        createPortal(
-          <LogEditForm handleUpdateLog={handleUpdateLog} />,
-          document.body
-        )}
+      {updateLogForm && createPortal(<LogEditForm />, document.body)}
 
       {popupState && (
         <div className="alert alert-error shadow-lg my-2">
@@ -57,7 +57,7 @@ export default function PopupInfo({ handleUpdateLog, handleDeleteLog }: Props) {
         </div>
       )}
       <div className="flex flex-col mb-2">
-        <p className="text-lg font-bold">{popupInfo?.title}</p>
+        <p className="text-lg font-bold">{popupInfo.title}</p>
         <div>
           <button onClick={() => setUpdateLogForm(true)} className="btn-xs">
             <EditIcon />
@@ -72,8 +72,8 @@ export default function PopupInfo({ handleUpdateLog, handleDeleteLog }: Props) {
           <picture>
             <img
               className="w-[280px] h-[160px] object-cover rounded-t-md"
-              src={popupInfo?.image}
-              alt={popupInfo?.title}
+              src={popupInfo.image}
+              alt={popupInfo.title}
             />
           </picture>
           <figcaption className="p-1 text-base bg-black text-white">
