@@ -15,7 +15,7 @@ export default function PopupInfo({ popupInfo }: Props) {
   const { logs, setLogs, setAlert } = useContext(TravelLogContext);
 
   const handleDeleteLog = (logID: string) => {
-    const deleteLog = logs.filter((log) => log._id.toString() !== logID);
+    const deleteLog = logs.filter((log) => log._id !== logID);
     setLogs(deleteLog);
   };
 
@@ -30,7 +30,7 @@ export default function PopupInfo({ popupInfo }: Props) {
       });
       if (response.ok) {
         setAlert('Log got deleted succesfully.');
-        const id = log._id.toString();
+        const id = log._id;
         handleDeleteLog(id);
       } else {
         const json = await response.json();

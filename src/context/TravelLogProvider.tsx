@@ -36,7 +36,7 @@ export default function TravelLogProvider({ children }: ProviderProps) {
   useEffect(() => {
     setTimeout(() => {
       setAlert('');
-    }, 1500);
+    }, 2000);
   }, [alert]);
 
   return (

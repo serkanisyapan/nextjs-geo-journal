@@ -3,7 +3,7 @@ interface AlertBoxProps {
 }
 export default function AlertBox({ alertMessage }: AlertBoxProps) {
   return (
-    <div className="fixed left-[40%] top-5 w-[400px] alert alert-success shadow-lg z-[999]">
+    <div className="fixed left-[40%] top-5 w-[500px] h-[50px] alert alert-success shadow-lg z-[999]">
       <div>
         <svg
           xmlns="http://www.w3.org/2000/svg"

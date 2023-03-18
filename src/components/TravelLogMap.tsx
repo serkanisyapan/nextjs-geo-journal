@@ -19,7 +19,6 @@ const ANKARA_COORDINATES = {
 
 export default function TravelLogMap() {
   const {
-    logs,
     filteredLogs,
     popupInfo,
     setPopupInfo,
@@ -67,17 +66,6 @@ export default function TravelLogMap() {
       setNewLogMarker(getMapCenter);
     }
   }, [sidebarVisible, popupInfo, newLogMarker, setNewLogMarker, mapRef]);
-
-  useEffect(() => {
-    const lastLog = logs[logs.length - 1];
-    if (lastLog) {
-      mapRef.current?.flyTo({
-        center: [lastLog.longitude, lastLog.latitude],
-        duration: 200,
-        zoom: 8,
-      });
-    }
-  }, [logs, mapRef]);
 
   return (
     <Map

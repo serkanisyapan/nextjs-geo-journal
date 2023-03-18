@@ -9,6 +9,7 @@ const zodErrors = {
 };
 
 export const TravelLogValidator = z.object({
+  _id: z.string().trim().min(1).optional(),
   title: z.string().trim().min(1, zodErrors.title),
   description: z.string().trim().min(1, zodErrors.description),
   image: z.string().trim().url(zodErrors.image),

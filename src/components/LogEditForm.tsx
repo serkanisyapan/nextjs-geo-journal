@@ -45,13 +45,13 @@ export default function LogEditForm() {
         headers: {
           'content-type': 'application/json',
         },
-        body: JSON.stringify({ ...data, logID: popupInfo?._id }),
+        body: JSON.stringify(data),
       });
       if (response.ok) {
         setAlert('Log got updated succesfully.');
-        const dataWithId: any = { ...data, _id: popupInfo?._id };
         localStorage.setItem('apiKey', data.apiKey);
-        handleUpdateLog(dataWithId);
+        // @ts-ignore
+        handleUpdateLog(data);
         setPopupInfo(null);
       } else {
         const json = await response.json();

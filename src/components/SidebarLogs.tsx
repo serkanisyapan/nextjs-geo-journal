@@ -17,6 +17,40 @@ export default function SidebarLogs() {
     return description.split('').slice(0, 30).join('');
   };
 
+  let logContent;
+  if (filteredLogs.length > 0) {
+    logContent = (
+      <div className="flex flex-col gap-3 my-3">
+        <span>{filteredLogs.length} log(s) found</span>
+        {filteredLogs.map((log) => (
+          <div
+            onClick={() => {
+              mapRef.current?.flyTo({
+                center: [log.longitude, log.latitude],
+                duration: 1000,
+              });
+              setPopupInfo(log);
+            }}
+            className="bg-slate-700 p-2 rounded-md hover:bg-slate-600 hover:cursor-pointer"
+            key={log._id.toString()}
+          >
+            <p className="mb-2 text-lg">{log.title}</p>
+            <p>{shortenDescription(log.description)}...</p>
+            <p className="text-sm mt-4">
+              {new Date(log.visitDate.toString()).toLocaleDateString()}
+            </p>
+          </div>
+        ))}
+      </div>
+    );
+  } else {
+    logContent = (
+      <div>
+        <p className="text-lg">No logs found...</p>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="fixed top-16 right-2 z-[989]">
@@ -41,27 +75,7 @@ export default function SidebarLogs() {
             </select>
             <CloseButton />
           </div>
-          <div className="flex flex-col gap-3 my-3">
-            {filteredLogs.map((log) => (
-              <div
-                onClick={() => {
-                  mapRef.current?.flyTo({
-                    center: [log.longitude, log.latitude],
-                    duration: 1000,
-                  });
-                  setPopupInfo(log);
-                }}
-                className="bg-slate-700 p-2 rounded-md hover:bg-slate-600 hover:cursor-pointer"
-                key={log._id.toString()}
-              >
-                <p className="mb-2 text-lg">{log.title}</p>
-                <p>{shortenDescription(log.description)}...</p>
-                <p className="text-sm mt-4">
-                  {new Date(log.visitDate.toString()).toLocaleDateString()}
-                </p>
-              </div>
-            ))}
-          </div>
+          {logContent}
         </div>
       )}
     </>

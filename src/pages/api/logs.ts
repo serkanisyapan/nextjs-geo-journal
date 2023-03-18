@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { TravelLogs, TravelLogValidator } from '@/models/TravelLogs';
 import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
-import { ObjectId } from 'mongodb';
 
 if (!process.env.API_KEY) {
   throw new Error('API key is missing in .env file.');
@@ -31,11 +30,9 @@ export default async function handler(
         const validateTravelLog = await TravelLogValidator.parseAsync(req.body);
         // @ts-expect-error
         delete validateTravelLog.apiKey;
-        const postTravelLog = await TravelLogs.insertOne(validateTravelLog);
-        return res.status(200).json({
-          ...validateTravelLog,
-          _id: postTravelLog.insertedId,
-        });
+        await TravelLogs.insertOne(validateTravelLog);
+        // @ts-ignore
+        return res.status(200).json(validateTravelLog);
       }
       case 'GET': {
         const logs = await TravelLogs.find().toArray();
@@ -46,13 +43,13 @@ export default async function handler(
         if (!logID) {
           throw new ErrorWithStatusCode('No logs found.', 400);
         }
-        await TravelLogs.deleteOne({ _id: new ObjectId(logID) });
+        await TravelLogs.deleteOne({ _id: logID });
         return res.status(200).json({ message: 'Log is deleted.' });
       }
       case 'PATCH': {
-        const { logID } = req.body;
-        const objectLogID = new ObjectId(logID);
-        if (!logID) {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        const { _id } = req.body;
+        if (!_id) {
           throw new ErrorWithStatusCode('No logs found.', 400);
         }
         if (req.body.apiKey !== process.env.API_KEY) {
@@ -63,10 +60,7 @@ export default async function handler(
         delete validateUpdateLog.apiKey;
         // @ts-expect-error
         delete validateUpdateLog.logID;
-        await TravelLogs.updateOne(
-          { _id: objectLogID },
-          { $set: { ...validateUpdateLog } }
-        );
+        await TravelLogs.updateOne({ _id }, { $set: { ...validateUpdateLog } });
         return res.status(200).json({ message: 'Log got updated.' });
       }
       default: {
