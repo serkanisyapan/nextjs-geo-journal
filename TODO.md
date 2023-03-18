@@ -20,10 +20,12 @@
 - [x] Loading spinner...
 - [x] Delete existing log
 - [x] Edit existing log
-- [ ] Cluster close points
-- [ ] DEPLOY!
-  - [ ] Vercel
-  - [ ] Mongo Atlas
+- [x] DEPLOY!
+  - [x] Vercel
+  - [x] Mongo Atlas
+- [ ] Next Auth with Google login
+  - [ ] Add user to db, new model
+  - [ ] Relationship between user and logs
 
 # Other TODO's
 
@@ -33,5 +35,6 @@
 - [x] List logs in sidebar, click to zoom
 - [x] Set places you want to visit
 - [x] Search for locations(geocoder)
-- Multiple at same location???
-- Next Auth...
+= [ ] Users can share their logs..
+- [ ] Multiple log at same location???
+- [ ] Cluster close logs
