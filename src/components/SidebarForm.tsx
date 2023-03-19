@@ -8,7 +8,7 @@ export default function SidebarForm() {
 
   return (
     <>
-      <div className="fixed top-2 right-2 z-[997]">
+      <div className="fixed top-12 right-2 z-[997]">
         <button
           onClick={() => {
             setPopupInfo(null);

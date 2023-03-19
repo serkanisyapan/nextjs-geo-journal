@@ -53,7 +53,7 @@ export default function SidebarLogs() {
 
   return (
     <>
-      <div className="fixed top-16 right-2 z-[989]">
+      <div className="fixed top-[115px] right-2 z-[989]">
         <button
           onClick={() => setLogsbarVisible(true)}
           className="btn btn-info"

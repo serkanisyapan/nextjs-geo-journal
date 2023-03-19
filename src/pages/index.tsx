@@ -5,9 +5,16 @@ import TravelLogProvider from '@/context/TravelLogProvider';
 import SidebarLogs from '@/components/SidebarLogs';
 import useFetchLogs from '@/hooks/useFetchLogs';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import UserSession from '@/components/UserSession';
+import { useSession } from 'next-auth/react';
+import Login from './login';
 
 export default function Home() {
   const { loading } = useFetchLogs();
+  const { status } = useSession();
+  if (status === 'unauthenticated') {
+    return <Login />;
+  }
   return (
     <>
       <Head>
@@ -18,6 +25,7 @@ export default function Home() {
       ) : (
         <TravelLogProvider>
           <>
+            <UserSession />
             <TravelLogMap />
             <SidebarForm />
             <SidebarLogs />
