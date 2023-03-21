@@ -1,11 +1,11 @@
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 
-export default function UserSession() {
+export default function UserInfo() {
   const { data: session, status } = useSession();
-  if (status === 'authenticated') {
+  if (session && status === 'authenticated') {
     return (
-      <div className="fixed flex justify-center items-center gap-3 top-2 right-2 z-[998]">
+      <div className="group fixed flex justify-center items-center gap-3 top-2 right-2 z-[998]">
         <p>{session.user?.email?.split('@')[0]}</p>
         <figure className="w-7">
           <picture>
@@ -16,6 +16,12 @@ export default function UserSession() {
             />
           </picture>
         </figure>
+        <button
+          onClick={() => signOut()}
+          className="hidden group-hover:block btn-xs btn-warning rounded-md"
+        >
+          Sign out
+        </button>
       </div>
     );
   }

@@ -13,6 +13,7 @@
 * [ReactJS](https://beta.reactjs.org/)
 * [Typescript](https://www.typescriptlang.org/)
 * [Zod](https://zod.dev/)
+* [NextAuth](https://next-auth.js.org/)
 
 ## Frontend
 * [react-map-gl](https://visgl.github.io/react-map-gl/)

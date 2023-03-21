@@ -23,9 +23,10 @@
 - [x] DEPLOY!
   - [x] Vercel
   - [x] Mongo Atlas
-- [ ] Next Auth with Google login
-  - [ ] Add user to db, new model
-  - [ ] Relationship between user and logs
+- [x] Next Auth with Google login
+  - [x] Add user to db, new model
+  - [x] Relationship between user and logs
+= [ ] Users can share their logs..
 
 # Other TODO's
 
@@ -35,6 +36,5 @@
 - [x] List logs in sidebar, click to zoom
 - [x] Set places you want to visit
 - [x] Search for locations(geocoder)
-= [ ] Users can share their logs..
 - [ ] Multiple log at same location???
 - [ ] Cluster close logs

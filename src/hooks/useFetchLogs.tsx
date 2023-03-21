@@ -1,21 +1,22 @@
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
+import { getSession } from 'next-auth/react';
 
 export default function useFetchLogs() {
   const [logs, setLogs] = useState<TravelLogTypeWithId[] | []>([]);
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
+
+  const fetchData = async () => {
+    const session = await getSession();
+    if (!session) return;
+    // @ts-ignore
+    const response = await fetch(`/api/user-logs/${session.user?.id}`);
+    const logsData = await response.json();
+    setLogs(logsData);
+  };
 
   useEffect(() => {
-    setLoading(true);
-    fetch('/api/logs')
-      .then((res) => res.json())
-      .then((data) => {
-        setLogs(data);
-        setLoading(false);
-      });
-  }, [router.query]);
+    fetchData();
+  }, []);
 
-  return { logs, loading, setLogs };
+  return { logs, setLogs };
 }
