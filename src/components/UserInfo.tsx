@@ -11,8 +11,8 @@ export default function UserInfo() {
           <picture>
             <img
               className="rounded-full"
-              src={session.user?.image}
-              alt={session.user?.name}
+              src={session.user?.image!}
+              alt={session.user?.name!}
             />
           </picture>
         </figure>
@@ -26,8 +26,8 @@ export default function UserInfo() {
     );
   }
   return (
-    <div>
-      <Link href="/login">Log in</Link>;
+    <div className="fixed flex justify-center items-center gap-3 top-2 right-2 z-[998]">
+      <Link href="/login">Log in</Link>
     </div>
   );
 }
