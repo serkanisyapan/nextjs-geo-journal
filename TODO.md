@@ -26,7 +26,7 @@
 - [x] Next Auth with Google login
   - [x] Add user to db, new model
   - [x] Relationship between user and logs
-= [ ] Users can share their logs..
+= [x] Users can share their logs..
 
 # Other TODO's
 

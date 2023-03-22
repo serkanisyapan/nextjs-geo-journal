@@ -1,18 +1,23 @@
-import { useContext } from 'react';
-import TravelLogContext from '@/context/TravelLogContext';
-import CloseButton from './CloseButton';
+import { TravelLogType } from '@/models/TravelLogValidator';
+import { MutableRefObject, useState } from 'react';
+import { MapRef } from 'react-map-gl';
 
-export default function SidebarLogs() {
-  const {
-    filteredLogs,
-    filterLogs,
-    setFilterLogs,
-    logsbarVisible,
-    setLogsbarVisible,
-    mapRef,
-    setPopupInfo,
-  } = useContext(TravelLogContext);
+interface SidebarProps {
+  filteredLogs: TravelLogType[] | [];
+  mapRef: MutableRefObject<MapRef | null>;
+  openPopup: (log: TravelLogType) => void;
+  filterBy: (filter: string) => void;
+  filterLogsBy: string;
+}
 
+export default function ProfileSidebar({
+  filteredLogs,
+  mapRef,
+  openPopup,
+  filterBy,
+  filterLogsBy,
+}: SidebarProps) {
+  const [logsbarVisible, setLogsbarVisible] = useState<boolean>(false);
   const shortenDescription = (description: string) => {
     return description.split('').slice(0, 30).join('');
   };
@@ -20,7 +25,7 @@ export default function SidebarLogs() {
   let logContent;
   if (filteredLogs.length > 0) {
     logContent = (
-      <div className="flex flex-col gap-3 my-3">
+      <div className="flex flex-col gap-3 my-3 font-mono text-lg">
         <span>{filteredLogs.length} log(s) found</span>
         {filteredLogs.map((log) => (
           <div
@@ -29,13 +34,15 @@ export default function SidebarLogs() {
                 center: [log.longitude, log.latitude],
                 duration: 1000,
               });
-              setPopupInfo(log);
+              openPopup(log);
             }}
             className="bg-slate-700 p-2 rounded-md hover:bg-slate-600 hover:cursor-pointer"
             key={log._id.toString()}
           >
-            <p className="mb-2 text-lg">{log.title}</p>
-            <p>{shortenDescription(log.description)}...</p>
+            <p className="mb-2">{log.title}</p>
+            <p className="text-base">
+              {shortenDescription(log.description)}...
+            </p>
             <p className="text-sm mt-4">
               {new Date(log.visitDate.toString()).toLocaleDateString()} -{' '}
               <span>{log.rating}/10</span>
@@ -54,7 +61,7 @@ export default function SidebarLogs() {
 
   return (
     <>
-      <div className="fixed top-[115px] right-2 z-[989]">
+      <div className="fixed top-2 right-2 z-[989] font-mono">
         <button
           onClick={() => setLogsbarVisible(true)}
           className="btn btn-info"
@@ -67,14 +74,34 @@ export default function SidebarLogs() {
           <div className="flex justify-between items-center mb-6">
             <select
               className="select"
-              onChange={(event) => setFilterLogs(event.target.value)}
-              defaultValue={filterLogs}
+              onChange={(event) => filterBy(event.target.value)}
+              defaultValue={filterLogsBy}
             >
               <option value="">---</option>
               <option value="Visited">Visited</option>
               <option value="Not Visited">Not Visited</option>
             </select>
-            <CloseButton />
+            <button
+              onClick={() => {
+                setLogsbarVisible(false);
+              }}
+              className="btn btn-circle btn-outline btn-sm"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
           </div>
           {logContent}
         </div>

@@ -20,7 +20,7 @@ export default async function handler(
   try {
     switch (req.method) {
       case 'GET': {
-        const getUserId = req.query.userLogs;
+        const getUserId = req.query.userlogs;
         const logs = await TravelLogs.find({ userId: getUserId }).toArray();
         return res.status(200).json(logs);
       }
