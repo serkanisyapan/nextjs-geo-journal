@@ -20,6 +20,7 @@ export const TravelLogValidator = z.object({
   visitDate: z.coerce.date(),
   apiKey: z.string().min(1, zodErrors.apiKey),
   visited: z.string(),
+  favorited: z.boolean(),
 });
 
 export type TravelLogType = z.infer<typeof TravelLogValidator>;

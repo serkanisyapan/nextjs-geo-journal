@@ -40,7 +40,7 @@ export default function ProfileSidebar({
             key={log._id.toString()}
           >
             <p className="mb-2">{log.title}</p>
-            <p className="text-base">
+            <p className="text-base break-words">
               {shortenDescription(log.description)}...
             </p>
             <p className="text-sm mt-4">
@@ -61,7 +61,7 @@ export default function ProfileSidebar({
 
   return (
     <>
-      <div className="fixed top-2 right-2 z-[989] font-mono">
+      <div className="fixed top-12 right-2 z-[989] font-mono">
         <button
           onClick={() => setLogsbarVisible(true)}
           className="btn btn-info"
@@ -80,6 +80,7 @@ export default function ProfileSidebar({
               <option value="">---</option>
               <option value="Visited">Visited</option>
               <option value="Not Visited">Not Visited</option>
+              <option value="Favorite">Favorite</option>
             </select>
             <button
               onClick={() => {

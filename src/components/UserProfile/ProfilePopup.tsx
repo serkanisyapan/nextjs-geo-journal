@@ -23,7 +23,7 @@ export default function ProfilePopup({ popupInfo }: Props) {
         </figure>
       </div>
       <div className="bg-gray-800 p-2 text-white rounded-md">
-        <p className="mb-2 text-lg">{popupInfo?.description}</p>
+        <p className="mb-2 text-lg break-words">{popupInfo?.description}</p>
         <p className="italic text-base">
           {new Date(popupInfo.visitDate.toString()).toLocaleDateString()}
         </p>

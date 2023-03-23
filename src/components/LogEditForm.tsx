@@ -48,7 +48,10 @@ export default function LogEditForm() {
         body: JSON.stringify(data),
       });
       if (response.ok) {
-        setAlert('Log got updated succesfully.');
+        setAlert({
+          message: 'Log got updated succesfully.',
+          status: 'success',
+        });
         localStorage.setItem('apiKey', data.apiKey);
         // @ts-ignore
         handleUpdateLog(data);

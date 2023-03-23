@@ -1,9 +1,14 @@
 interface AlertBoxProps {
-  alertMessage: string;
+  alertMessage: {
+    message: string;
+    status: string;
+  };
 }
 export default function AlertBox({ alertMessage }: AlertBoxProps) {
   return (
-    <div className="fixed left-[40%] top-5 w-[500px] h-[50px] alert alert-success shadow-lg z-[999]">
+    <div
+      className={`fixed left-[40%] top-5 w-[500px] h-[50px] alert alert-${alertMessage.status} shadow-lg z-[999]`}
+    >
       <div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -18,7 +23,7 @@ export default function AlertBox({ alertMessage }: AlertBoxProps) {
             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
           />
         </svg>
-        <span className="text-lg">{alertMessage}</span>
+        <span className="text-lg">{alertMessage.message}</span>
       </div>
     </div>
   );

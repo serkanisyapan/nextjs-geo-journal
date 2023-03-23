@@ -11,6 +11,7 @@ import FormInputs from './FormInputs';
 export default function TravelLogForm() {
   const [formError, setFormError] = useState<string>('');
   const [sendingNewLog, setSendingNewLog] = useState<boolean>(false);
+  const [favorited, setFavorited] = useState(false);
   const [logId, setLogId] = useState('');
   const [userId, setUserId] = useState('');
   const {
@@ -51,7 +52,7 @@ export default function TravelLogForm() {
         body: JSON.stringify(data),
       });
       if (response.ok) {
-        setAlert('Log got added successfully.');
+        setAlert({ message: 'Log got added successfully.', status: 'success' });
         localStorage.setItem('apiKey', data.apiKey);
         reset();
         setSidebarVisible(false);
@@ -81,7 +82,8 @@ export default function TravelLogForm() {
   useEffect(() => {
     setValue('_id', logId);
     setValue('userId', userId);
-  }, [setValue, logId, userId]);
+    setValue('favorited', favorited);
+  }, [setValue, logId, userId, favorited]);
 
   return (
     <>
@@ -103,6 +105,7 @@ export default function TravelLogForm() {
         <button
           onClick={() => {
             if (!session) return;
+            setFavorited(false);
             setLogId(uuidv4());
             // @ts-ignore
             setUserId(session.user?.id);

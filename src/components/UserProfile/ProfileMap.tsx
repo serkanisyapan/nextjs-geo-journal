@@ -46,6 +46,9 @@ export default function VisitLogs({ username }: VisitLogsProps) {
     if (filterLogsBy === 'Not Visited') {
       return log.visited === 'No';
     }
+    if (filterLogsBy === 'Favorite') {
+      return log.favorited;
+    }
     return log;
   });
 

@@ -1,3 +1,4 @@
+import UserInfo from '@/components/UserInfo';
 import VisitLogs from '@/components/UserProfile/ProfileMap';
 import Head from 'next/head';
 
@@ -11,6 +12,7 @@ export default function UserLogs({ username }: Props) {
       <Head>
         <title>{username} logs - Geo Journal</title>
       </Head>
+      <UserInfo />
       <VisitLogs username={username} />
     </>
   );

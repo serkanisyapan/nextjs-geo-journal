@@ -35,7 +35,9 @@ export default function SidebarLogs() {
             key={log._id.toString()}
           >
             <p className="mb-2 text-lg">{log.title}</p>
-            <p>{shortenDescription(log.description)}...</p>
+            <p className="break-words">
+              {shortenDescription(log.description)}...
+            </p>
             <p className="text-sm mt-4">
               {new Date(log.visitDate.toString()).toLocaleDateString()} -{' '}
               <span>{log.rating}/10</span>
@@ -73,6 +75,7 @@ export default function SidebarLogs() {
               <option value="">---</option>
               <option value="Visited">Visited</option>
               <option value="Not Visited">Not Visited</option>
+              <option value="Favorite">Favorite</option>
             </select>
             <CloseButton />
           </div>

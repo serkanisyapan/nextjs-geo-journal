@@ -13,6 +13,11 @@ interface ProviderProps {
   children: ReactNode;
 }
 
+interface AlertMessage {
+  message: string;
+  status: string;
+}
+
 export default function TravelLogProvider({ children }: ProviderProps) {
   const { logs, setLogs } = useFetchLogs();
   const [filterLogs, setFilterLogs] = useState<string>('');
@@ -20,7 +25,7 @@ export default function TravelLogProvider({ children }: ProviderProps) {
   const [sidebarVisible, setSidebarVisible] = useState<boolean>(false);
   const [logsbarVisible, setLogsbarVisible] = useState<boolean>(false);
   const [popupInfo, setPopupInfo] = useState<TravelLogTypeWithId | null>(null);
-  const [alert, setAlert] = useState<string>('');
+  const [alert, setAlert] = useState<AlertMessage | null>(null);
   const mapRef = useRef<MapRef | null>(null);
 
   const filteredLogs = logs.filter((log) => {
@@ -30,12 +35,15 @@ export default function TravelLogProvider({ children }: ProviderProps) {
     if (filterLogs === 'Not Visited') {
       return log.visited === 'No';
     }
+    if (filterLogs === 'Favorite') {
+      return log.favorited;
+    }
     return log;
   });
 
   useEffect(() => {
     setTimeout(() => {
-      setAlert('');
+      setAlert(null);
     }, 2000);
   }, [alert]);
 

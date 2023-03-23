@@ -3,7 +3,7 @@ import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
 import { useContext, useState } from 'react';
 import { createPortal } from 'react-dom';
 import LogEditForm from './LogEditForm';
-import { DeleteIcon, EditIcon } from './MapIcons';
+import { DeleteIcon, EditIcon, FavoriteStar } from './MapIcons';
 
 interface Props {
   popupInfo: TravelLogTypeWithId;
@@ -12,11 +12,57 @@ interface Props {
 export default function PopupInfo({ popupInfo }: Props) {
   const [popupState, setPopupState] = useState<string>('');
   const [updateLogForm, setUpdateLogForm] = useState<boolean>(false);
-  const { logs, setLogs, setAlert } = useContext(TravelLogContext);
+  const { logs, setLogs, setPopupInfo, setAlert } =
+    useContext(TravelLogContext);
 
   const handleDeleteLog = (logID: string) => {
     const deleteLog = logs.filter((log) => log._id !== logID);
     setLogs(deleteLog);
+  };
+
+  const handleFavorite = (info: TravelLogTypeWithId) => {
+    setPopupInfo({ ...popupInfo, favorited: !popupInfo.favorited });
+    const updateLogs = logs.map((log) => {
+      if (log._id === info._id) {
+        return { ...log, favorited: !log.favorited };
+      }
+      return log;
+    });
+    setLogs(updateLogs);
+  };
+
+  const addFavoriteReq = async (log: TravelLogTypeWithId) => {
+    try {
+      const response = await fetch('/api/logs', {
+        method: 'PATCH',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...log,
+          favorited: !popupInfo.favorited,
+          apiKey: localStorage.getItem('apiKey') || '',
+        }),
+      });
+      if (response.ok) {
+        if (!log.favorited) {
+          setAlert({ message: 'Log added to favorites.', status: 'success' });
+        } else {
+          setAlert({
+            message: 'Log removed from favorites.',
+            status: 'success',
+          });
+        }
+        // @ts-ignore
+        handleFavorite(log);
+      } else {
+        const json = await response.json();
+        throw new Error(json.message);
+      }
+    } catch (e) {
+      const error = e as Error;
+      setAlert({ message: `${error.message}`, status: 'error' });
+    }
   };
 
   const deleteLogReq = async (log: TravelLogTypeWithId) => {
@@ -29,7 +75,10 @@ export default function PopupInfo({ popupInfo }: Props) {
         body: JSON.stringify({ logID: log._id }),
       });
       if (response.ok) {
-        setAlert('Log got deleted succesfully.');
+        setAlert({
+          message: 'Log got deleted succesfully.',
+          status: 'success',
+        });
         const id = log._id;
         handleDeleteLog(id);
       } else {
@@ -58,11 +107,14 @@ export default function PopupInfo({ popupInfo }: Props) {
       )}
       <div className="flex flex-col mb-2">
         <p className="text-lg font-bold">{popupInfo.title}</p>
-        <div>
-          <button onClick={() => setUpdateLogForm(true)} className="btn-xs">
+        <div className="flex items-center gap-2 mt-1">
+          <button onClick={() => addFavoriteReq(popupInfo)}>
+            <FavoriteStar isFavorited={popupInfo.favorited} />
+          </button>
+          <button onClick={() => setUpdateLogForm(true)}>
             <EditIcon />
           </button>
-          <button className="btn-xs" onClick={() => deleteLogReq(popupInfo)}>
+          <button onClick={() => deleteLogReq(popupInfo)}>
             <DeleteIcon />
           </button>
         </div>
@@ -82,7 +134,7 @@ export default function PopupInfo({ popupInfo }: Props) {
         </figure>
       </div>
       <div className="bg-gray-800 p-2 text-white rounded-md">
-        <p className="mb-2 text-lg">{popupInfo?.description}</p>
+        <p className="mb-2 text-lg break-words">{popupInfo?.description}</p>
         <p className="italic text-base">
           {new Date(popupInfo.visitDate.toString()).toLocaleDateString()}
         </p>
