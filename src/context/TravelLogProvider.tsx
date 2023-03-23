@@ -42,9 +42,10 @@ export default function TravelLogProvider({ children }: ProviderProps) {
   });
 
   useEffect(() => {
-    setTimeout(() => {
+    const newTimeout = setTimeout(() => {
       setAlert(null);
     }, 2000);
+    return () => clearTimeout(newTimeout);
   }, [alert]);
 
   return (
