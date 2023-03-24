@@ -24,12 +24,7 @@ export default async function handler(
   try {
     switch (req.method) {
       case 'POST': {
-        if (req.body.apiKey !== process.env.API_KEY) {
-          throw new ErrorWithStatusCode('Unauthorized.', 401);
-        }
         const validateTravelLog = await TravelLogValidator.parseAsync(req.body);
-        // @ts-expect-error
-        delete validateTravelLog.apiKey;
         await TravelLogs.insertOne(validateTravelLog);
         // @ts-ignore
         return res.status(200).json(validateTravelLog);
@@ -52,12 +47,7 @@ export default async function handler(
         if (!_id) {
           throw new ErrorWithStatusCode('No logs found.', 400);
         }
-        if (req.body.apiKey !== process.env.API_KEY) {
-          throw new ErrorWithStatusCode('Unauthorized.', 401);
-        }
         const validateUpdateLog = await TravelLogValidator.parseAsync(req.body);
-        // @ts-expect-error
-        delete validateUpdateLog.apiKey;
         // @ts-expect-error
         delete validateUpdateLog.logID;
         await TravelLogs.updateOne({ _id }, { $set: { ...validateUpdateLog } });

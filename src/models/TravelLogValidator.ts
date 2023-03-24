@@ -5,7 +5,6 @@ const zodErrors = {
   title: 'Title must contain at least 1 character',
   description: 'Description must contain at least 1 character',
   image: 'Must be a valid URL',
-  apiKey: 'API Key cannot be empty',
 };
 
 export const TravelLogValidator = z.object({
@@ -18,7 +17,6 @@ export const TravelLogValidator = z.object({
   latitude: z.coerce.number().min(-90).max(90),
   longitude: z.coerce.number().min(-180).max(180),
   visitDate: z.coerce.date(),
-  apiKey: z.string().min(1, zodErrors.apiKey),
   visited: z.string(),
   favorited: z.boolean(),
 });

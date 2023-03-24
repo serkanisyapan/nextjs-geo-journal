@@ -39,8 +39,7 @@ export default function FormInputs({ errors, register }: FormInputsType) {
             <option value="No">No</option>
           </select>
         )}
-        {(title === 'apiKey' ||
-          title === 'title' ||
+        {(title === 'title' ||
           title === 'image' ||
           title === 'rating' ||
           title === 'visitDate') && (

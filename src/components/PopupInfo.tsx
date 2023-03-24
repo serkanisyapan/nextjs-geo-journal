@@ -42,7 +42,6 @@ export default function PopupInfo({ popupInfo }: Props) {
         body: JSON.stringify({
           ...log,
           favorited: !popupInfo.favorited,
-          apiKey: localStorage.getItem('apiKey') || '',
         }),
       });
       if (response.ok) {

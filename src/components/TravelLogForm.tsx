@@ -34,7 +34,6 @@ export default function TravelLogForm() {
       longitude: newLogMarker?.lng,
       // @ts-ignore
       visitDate: new Date().toISOString().substring(0, 10),
-      apiKey: localStorage.getItem('apiKey') ?? '',
     },
   });
   const { data: session } = useSession();
@@ -51,7 +50,6 @@ export default function TravelLogForm() {
       });
       if (response.ok) {
         setAlert({ message: 'Log got added successfully.', status: 'success' });
-        localStorage.setItem('apiKey', data.apiKey);
         reset();
         setSidebarVisible(false);
         setNewLogMarker(null);

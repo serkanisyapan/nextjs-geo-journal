@@ -23,7 +23,6 @@ export default function LogEditForm() {
   } = useForm<TravelLogType>({
     resolver: zodResolver(TravelLogValidator),
     defaultValues: {
-      apiKey: localStorage.getItem('apiKey') || '',
       ...popupInfo,
     },
   });
@@ -53,7 +52,6 @@ export default function LogEditForm() {
           message: 'Log got updated succesfully.',
           status: 'success',
         });
-        localStorage.setItem('apiKey', data.apiKey);
         // @ts-ignore
         handleUpdateLog(data);
         setPopupInfo(null);
