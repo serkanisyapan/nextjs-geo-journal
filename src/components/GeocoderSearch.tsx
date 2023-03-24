@@ -1,8 +1,8 @@
 // @ts-nocheck
-import { useContext } from 'react';
 import { useControl, MarkerProps, ControlPosition } from 'react-map-gl';
 import MapboxGeocoder, { GeocoderOptions } from '@mapbox/mapbox-gl-geocoder';
-import TravelLogContext from '@/context/TravelLogContext';
+import useSidebarsStore from '@/store/sidebarsStore';
+import useMarkerStore from '@/store/markerStore';
 
 type GeocoderControlProps = Omit<
   GeocoderOptions,
@@ -21,7 +21,8 @@ type GeocoderControlProps = Omit<
 
 /* eslint-disable complexity,max-statements */
 export default function GeocoderControl(props: GeocoderControlProps) {
-  const { setSidebarVisible, setNewLogMarker } = useContext(TravelLogContext);
+  const { setSidebarVisible } = useSidebarsStore();
+  const { setNewLogMarker } = useMarkerStore();
 
   const geocoder = useControl<MapboxGeocoder>(
     () => {
