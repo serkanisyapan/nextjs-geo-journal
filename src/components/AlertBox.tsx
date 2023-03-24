@@ -5,6 +5,8 @@ interface AlertBoxProps {
   };
 }
 export default function AlertBox({ alertMessage }: AlertBoxProps) {
+  const alertColor =
+    alertMessage.status === 'success' ? 'alert-success' : 'alert-error';
   let alertIcon;
   if (alertMessage.status === 'success') {
     alertIcon = (
@@ -41,7 +43,7 @@ export default function AlertBox({ alertMessage }: AlertBoxProps) {
   }
   return (
     <div
-      className={`fixed left-[40%] top-5 w-[500px] h-[50px] alert alert-${alertMessage.status} shadow-lg z-[999]`}
+      className={`fixed left-[40%] top-5 w-[500px] h-[50px] alert ${alertColor} shadow-lg z-[999]`}
     >
       <div>
         {alertIcon}

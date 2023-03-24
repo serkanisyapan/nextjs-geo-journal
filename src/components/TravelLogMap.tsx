@@ -7,6 +7,8 @@ import Map, {
 } from 'react-map-gl';
 import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
 import TravelLogContext from '@/context/TravelLogContext';
+import useSidebarsStore from '@/store/sidebarsStore';
+import useMarkerStore from '@/store/markerStore';
 import { MapPin } from './MapIcons';
 import PopupInfo from './PopupInfo';
 import GeocoderControl from './GeocoderSearch';
@@ -18,17 +20,10 @@ const ANKARA_COORDINATES = {
 };
 
 export default function TravelLogMap() {
-  const {
-    filteredLogs,
-    popupInfo,
-    setPopupInfo,
-    newLogMarker,
-    setNewLogMarker,
-    sidebarVisible,
-    setSidebarVisible,
-    alert,
-    mapRef,
-  } = useContext(TravelLogContext);
+  const { filteredLogs, alert, mapRef } = useContext(TravelLogContext);
+  const { sidebarVisible, setSidebarVisible } = useSidebarsStore();
+  const { popupInfo, setPopupInfo, newLogMarker, setNewLogMarker } =
+    useMarkerStore();
 
   function handleDragEnd(event: MarkerDragEvent) {
     if (!event.lngLat) return;

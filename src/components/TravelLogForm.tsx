@@ -5,6 +5,8 @@ import { TravelLogValidator, TravelLogType } from '@/models/TravelLogValidator';
 import { v4 as uuidv4 } from 'uuid';
 import TravelLogContext from '@/context/TravelLogContext';
 import { useSession } from 'next-auth/react';
+import useMarkerStore from '@/store/markerStore';
+import useSidebarsStore from '@/store/sidebarsStore';
 import CloseButton from './CloseButton';
 import FormInputs from './FormInputs';
 
@@ -14,13 +16,9 @@ export default function TravelLogForm() {
   const [favorited, setFavorited] = useState(false);
   const [logId, setLogId] = useState('');
   const [userId, setUserId] = useState('');
-  const {
-    setLogs,
-    newLogMarker,
-    setSidebarVisible,
-    setNewLogMarker,
-    setAlert,
-  } = useContext(TravelLogContext);
+  const { newLogMarker, setNewLogMarker } = useMarkerStore();
+  const { setSidebarVisible } = useSidebarsStore();
+  const { setLogs, setAlert } = useContext(TravelLogContext);
   const {
     register,
     handleSubmit,

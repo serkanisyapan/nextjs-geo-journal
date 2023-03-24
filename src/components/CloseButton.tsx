@@ -1,9 +1,9 @@
-import TravelLogContext from '@/context/TravelLogContext';
-import { useContext } from 'react';
+import useSidebarsStore from '@/store/sidebarsStore';
+import useMarkerStore from '@/store/markerStore';
 
 export default function CloseButton() {
-  const { setNewLogMarker, setSidebarVisible, setLogsbarVisible } =
-    useContext(TravelLogContext);
+  const { setNewLogMarker } = useMarkerStore();
+  const { setSidebarVisible, setLogsbarVisible } = useSidebarsStore();
 
   return (
     <button

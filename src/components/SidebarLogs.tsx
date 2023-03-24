@@ -1,17 +1,14 @@
 import { useContext } from 'react';
 import TravelLogContext from '@/context/TravelLogContext';
+import useSidebarsStore from '@/store/sidebarsStore';
+import useMarkerStore from '@/store/markerStore';
 import CloseButton from './CloseButton';
 
 export default function SidebarLogs() {
-  const {
-    filteredLogs,
-    filterLogs,
-    setFilterLogs,
-    logsbarVisible,
-    setLogsbarVisible,
-    mapRef,
-    setPopupInfo,
-  } = useContext(TravelLogContext);
+  const { logsbarVisible, setLogsbarVisible } = useSidebarsStore();
+  const { setPopupInfo } = useMarkerStore();
+  const { filteredLogs, filterLogs, setFilterLogs, mapRef } =
+    useContext(TravelLogContext);
 
   const shortenDescription = (description: string) => {
     return description.split('').slice(0, 30).join('');
@@ -56,7 +53,7 @@ export default function SidebarLogs() {
 
   return (
     <>
-      <div className="fixed top-[115px] right-2 z-[989]">
+      <div className="fixed top-[105px] right-2 z-[989]">
         <button
           onClick={() => setLogsbarVisible(true)}
           className="btn btn-info"

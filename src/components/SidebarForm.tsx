@@ -1,10 +1,10 @@
-import TravelLogContext from '@/context/TravelLogContext';
-import { useContext } from 'react';
+import useSidebarsStore from '@/store/sidebarsStore';
+import useMarkerStore from '@/store/markerStore';
 import TravelLogForm from './TravelLogForm';
 
 export default function SidebarForm() {
-  const { setPopupInfo, sidebarVisible, setSidebarVisible } =
-    useContext(TravelLogContext);
+  const { setPopupInfo } = useMarkerStore();
+  const { sidebarVisible, setSidebarVisible } = useSidebarsStore();
 
   return (
     <>

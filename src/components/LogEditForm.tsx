@@ -7,13 +7,14 @@ import {
   TravelLogTypeWithId,
 } from '@/models/TravelLogValidator';
 import TravelLogContext from '@/context/TravelLogContext';
+import useMarkerStore from '@/store/markerStore';
 import FormInputs from './FormInputs';
 
 export default function LogEditForm() {
   const [formError, setFormError] = useState<string>('');
   const [updatingLog, setUpdateingLog] = useState<boolean>(false);
-  const { logs, setLogs, popupInfo, setPopupInfo, setAlert } =
-    useContext(TravelLogContext);
+  const { popupInfo, setPopupInfo } = useMarkerStore();
+  const { logs, setLogs, setAlert } = useContext(TravelLogContext);
   const {
     register,
     handleSubmit,

@@ -1,5 +1,6 @@
 import TravelLogContext from '@/context/TravelLogContext';
 import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
+import useMarkerStore from '@/store/markerStore';
 import { useContext, useState } from 'react';
 import { createPortal } from 'react-dom';
 import LogEditForm from './LogEditForm';
@@ -12,8 +13,8 @@ interface Props {
 export default function PopupInfo({ popupInfo }: Props) {
   const [popupState, setPopupState] = useState<string>('');
   const [updateLogForm, setUpdateLogForm] = useState<boolean>(false);
-  const { logs, setLogs, setPopupInfo, setAlert } =
-    useContext(TravelLogContext);
+  const { setPopupInfo } = useMarkerStore();
+  const { logs, setLogs, setAlert } = useContext(TravelLogContext);
 
   const handleDeleteLog = (logID: string) => {
     const deleteLog = logs.filter((log) => log._id !== logID);
