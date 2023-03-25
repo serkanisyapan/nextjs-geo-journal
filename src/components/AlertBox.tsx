@@ -43,10 +43,10 @@ export default function AlertBox({ alertMessage }: AlertBoxProps) {
   }
   return (
     <div
-      className={`fixed left-[40%] top-5 w-[500px] h-[50px] alert ${alertColor} shadow-lg z-[999]`}
+      className={`fixed left-[10%] w-[300px] sm:left-[25%] sm:w-[500px] top-5 alert ${alertColor} shadow-lg z-[999]`}
     >
       <div>
-        {alertIcon}
+        <span>{alertIcon}</span>
         <span className="text-lg">{alertMessage.message}</span>
       </div>
     </div>

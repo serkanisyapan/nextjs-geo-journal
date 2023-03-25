@@ -4,33 +4,35 @@
 
 ## Backend
 
-* [Next.js 13](https://nextjs.org/docs/getting-started)
-* [MongoDB](https://www.mongodb.com/)
-  * [mongodb](https://www.npmjs.com/package/mongodb)
+- [Next.js 13](https://nextjs.org/docs/getting-started)
+- [MongoDB](https://www.mongodb.com/)
+  - [mongodb](https://www.npmjs.com/package/mongodb)
 
 ## Shared
 
-* [ReactJS](https://beta.reactjs.org/)
-* [Typescript](https://www.typescriptlang.org/)
-* [Zod](https://zod.dev/)
-* [NextAuth](https://next-auth.js.org/)
+- [ReactJS](https://beta.reactjs.org/)
+- [Typescript](https://www.typescriptlang.org/)
+- [Zod](https://zod.dev/)
+- [NextAuth](https://next-auth.js.org/)
 
 ## Frontend
-* [react-map-gl](https://visgl.github.io/react-map-gl/)
-* [react-hook-form](https://react-hook-form.com/)
-* [Tailwind](https://tailwindcss.com/)
-* [DaisyUI](https://daisyui.com/)
+
+- [react-map-gl](https://visgl.github.io/react-map-gl/)
+- [react-hook-form](https://react-hook-form.com/)
+- [Tailwind](https://tailwindcss.com/)
+- [DaisyUI](https://daisyui.com/)
 
 ## Dev Tools
 
-* [eslint](https://eslint.org/)
-* [prettier](https://prettier.io/)
-* [prettier + eslint](https://github.com/prettier/eslint-plugin-prettier)
+- [eslint](https://eslint.org/)
+- [prettier](https://prettier.io/)
+- [prettier + eslint](https://github.com/prettier/eslint-plugin-prettier)
+- [zustand](https://zustand-demo.pmnd.rs/)
+- [uuid](https://github.com/uuidjs/uuid)
 
 ## Utilities
 
-* [Mapbox Free Tier](https://www.mapbox.com/)
-
+- [Mapbox Free Tier](https://www.mapbox.com/)
 
 ## Running locally
 
