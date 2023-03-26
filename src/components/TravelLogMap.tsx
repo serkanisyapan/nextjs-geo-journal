@@ -9,6 +9,7 @@ import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
 import TravelLogContext from '@/context/TravelLogContext';
 import useSidebarsStore from '@/store/sidebarsStore';
 import useMarkerStore from '@/store/markerStore';
+import useAlertStore from '@/store/alertStore';
 import { MapPin } from './MapIcons';
 import PopupInfo from './PopupInfo';
 import GeocoderControl from './GeocoderSearch';
@@ -20,10 +21,11 @@ const ANKARA_COORDINATES = {
 };
 
 export default function TravelLogMap() {
-  const { filteredLogs, alert, mapRef } = useContext(TravelLogContext);
+  const { filteredLogs, mapRef } = useContext(TravelLogContext);
   const { sidebarVisible, setSidebarVisible } = useSidebarsStore();
   const { popupInfo, setPopupInfo, newLogMarker, setNewLogMarker } =
     useMarkerStore();
+  const { alert } = useAlertStore();
 
   function handleDragEnd(event: MarkerDragEvent) {
     if (!event.lngLat) return;

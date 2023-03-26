@@ -1,29 +1,24 @@
-import { useContext, useEffect, useState } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TravelLogValidator, TravelLogType } from '@/models/TravelLogValidator';
 import { v4 as uuidv4 } from 'uuid';
-import TravelLogContext from '@/context/TravelLogContext';
 import { useSession } from 'next-auth/react';
 import useMarkerStore from '@/store/markerStore';
-import useSidebarsStore from '@/store/sidebarsStore';
+import useSubmitLog from '@/hooks/useSubmitLog';
 import CloseButton from './CloseButton';
 import FormInputs from './FormInputs';
 
 export default function TravelLogForm() {
-  const [formError, setFormError] = useState<string>('');
-  const [sendingNewLog, setSendingNewLog] = useState<boolean>(false);
   const [favorited, setFavorited] = useState(false);
   const [logId, setLogId] = useState('');
   const [userId, setUserId] = useState('');
-  const { newLogMarker, setNewLogMarker } = useMarkerStore();
-  const { setSidebarVisible } = useSidebarsStore();
-  const { setLogs, setAlert } = useContext(TravelLogContext);
+  const { newLogMarker } = useMarkerStore();
   const {
     register,
     handleSubmit,
     setValue,
-    reset,
+    // reset,
     formState: { errors },
   } = useForm<TravelLogType>({
     resolver: zodResolver(TravelLogValidator),
@@ -37,37 +32,7 @@ export default function TravelLogForm() {
     },
   });
   const { data: session } = useSession();
-
-  const onSubmit: SubmitHandler<TravelLogType> = async (data) => {
-    try {
-      setSendingNewLog(true);
-      const response = await fetch('/api/logs', {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      if (response.ok) {
-        setAlert({ message: 'Log got added successfully.', status: 'success' });
-        reset();
-        setSidebarVisible(false);
-        setNewLogMarker(null);
-        // @ts-ignore
-        setLogs((prev) => [...prev, data]);
-      } else {
-        const json = await response.json();
-        throw new Error(json.message);
-      }
-    } catch (e) {
-      const error = e as Error;
-      setFormError(error.message);
-      setTimeout(() => {
-        setFormError('');
-      }, 1500);
-    }
-    setSendingNewLog(false);
-  };
+  const { onSubmit, formError, sendingNewLog } = useSubmitLog();
 
   useEffect(() => {
     if (!newLogMarker) return;
@@ -95,7 +60,7 @@ export default function TravelLogForm() {
       )}
       <form
         className="max-w-lg m-auto flex flex-col gap-2 my-4 mx-2"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit((data) => onSubmit(data))}
       >
         <FormInputs errors={errors} register={register} />
         <button

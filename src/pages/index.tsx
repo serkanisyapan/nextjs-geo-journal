@@ -19,12 +19,10 @@ export default function Home() {
         <title>Travel Log</title>
       </Head>
       <TravelLogProvider>
-        <>
-          <UserInfo />
-          <TravelLogMap />
-          <SidebarForm />
-          <SidebarLogs />
-        </>
+        <UserInfo />
+        <TravelLogMap />
+        <SidebarForm />
+        <SidebarLogs />
       </TravelLogProvider>
     </>
   );

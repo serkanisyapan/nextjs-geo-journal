@@ -2,13 +2,18 @@ import { useContext } from 'react';
 import TravelLogContext from '@/context/TravelLogContext';
 import useSidebarsStore from '@/store/sidebarsStore';
 import useMarkerStore from '@/store/markerStore';
+import useDeleteLog from '@/hooks/useDeleteLog';
+import useFavoriteLog from '@/hooks/useFavoriteLog';
 import CloseButton from './CloseButton';
+import { DeleteIcon, FavoriteStar } from './MapIcons';
 
 export default function SidebarLogs() {
   const { logsbarVisible, setLogsbarVisible } = useSidebarsStore();
   const { setPopupInfo } = useMarkerStore();
   const { filteredLogs, filterLogs, setFilterLogs, mapRef } =
     useContext(TravelLogContext);
+  const { deleteLogReq } = useDeleteLog();
+  const { addFavoriteReq } = useFavoriteLog();
 
   const shortenDescription = (description: string) => {
     return description.split('').slice(0, 30).join('');
@@ -35,10 +40,32 @@ export default function SidebarLogs() {
             <p className="break-words">
               {shortenDescription(log.description)}...
             </p>
-            <p className="text-sm mt-4">
-              {new Date(log.visitDate.toString()).toLocaleDateString()} -{' '}
-              <span>{log.rating}/10</span>
-            </p>
+            <div className="flex flex-row justify-between items-center mt-3">
+              <p className="text-sm">
+                {new Date(log.visitDate.toString()).toLocaleDateString()} -{' '}
+                <span>{log.rating}/10</span>
+              </p>
+              <div>
+                <button
+                  className="hover:bg-slate-400 rounded-full p-1"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    addFavoriteReq(log);
+                  }}
+                >
+                  <FavoriteStar isFavorited={log.favorited} />
+                </button>
+                <button
+                  className="hover:bg-slate-400 rounded-full p-1"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    deleteLogReq(log);
+                  }}
+                >
+                  <DeleteIcon />
+                </button>
+              </div>
+            </div>
           </div>
         ))}
       </div>

@@ -1,20 +1,14 @@
-import { useContext, useEffect, useState } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  TravelLogValidator,
-  TravelLogType,
-  TravelLogTypeWithId,
-} from '@/models/TravelLogValidator';
-import TravelLogContext from '@/context/TravelLogContext';
+import { TravelLogValidator, TravelLogType } from '@/models/TravelLogValidator';
 import useMarkerStore from '@/store/markerStore';
+import useUpdateLogs from '@/hooks/useUpdateLog';
 import FormInputs from './FormInputs';
 
 export default function LogEditForm() {
-  const [formError, setFormError] = useState<string>('');
-  const [updatingLog, setUpdateingLog] = useState<boolean>(false);
-  const { popupInfo, setPopupInfo } = useMarkerStore();
-  const { logs, setLogs, setAlert } = useContext(TravelLogContext);
+  const { popupInfo } = useMarkerStore();
+  const { onSubmit, formError, updatingLog } = useUpdateLogs();
   const {
     register,
     handleSubmit,
@@ -26,48 +20,6 @@ export default function LogEditForm() {
       ...popupInfo,
     },
   });
-
-  const handleUpdateLog = (data: TravelLogTypeWithId) => {
-    const updateLogs = logs.map((log) => {
-      if (log._id === data._id) {
-        return { ...data };
-      }
-      return log;
-    });
-    setLogs(updateLogs);
-  };
-
-  const onSubmit: SubmitHandler<TravelLogType> = async (data) => {
-    try {
-      setUpdateingLog(true);
-      const response = await fetch('/api/logs', {
-        method: 'PATCH',
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      if (response.ok) {
-        setAlert({
-          message: 'Log got updated succesfully.',
-          status: 'success',
-        });
-        // @ts-ignore
-        handleUpdateLog(data);
-        setPopupInfo(null);
-      } else {
-        const json = await response.json();
-        throw new Error(json.message);
-      }
-    } catch (e) {
-      const error = e as Error;
-      setFormError(error.message);
-      setTimeout(() => {
-        setFormError('');
-      }, 1500);
-    }
-    setUpdateingLog(false);
-  };
 
   useEffect(() => {
     const visitDateValue = () => {
