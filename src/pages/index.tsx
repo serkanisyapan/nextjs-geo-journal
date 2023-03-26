@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Travel Log</title>
+        <title>Geo Journal</title>
       </Head>
       <TravelLogProvider>
         <UserInfo />

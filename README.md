@@ -1,4 +1,4 @@
-# Full Stack Travel Log with Next.js 13
+# Full Stack Geo Journal with Next.js 13
 
 # Tech Stack
 
