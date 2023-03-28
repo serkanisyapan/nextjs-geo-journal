@@ -25,7 +25,7 @@ export default function UserInfo() {
           </figure>
         </div>
         {showButtons && (
-          <div className="flex flex-col p-2 mt-2 gap-1 bg-black bg-opacity-70">
+          <div className="fixed top-0 right-[130px] flex flex-col mt-2 gap-1 p-2">
             <button
               onClick={() => {
                 navigator.clipboard.writeText(
@@ -38,13 +38,13 @@ export default function UserInfo() {
                   setShareButton('Share');
                 }, 1000);
               }}
-              className="btn-sm btn-warning rounded-md"
+              className="btn-sm btn-info rounded-md"
             >
               {shareButton}
             </button>
             <button
               onClick={() => signOut()}
-              className="btn-sm btn-warning rounded-md"
+              className="btn-sm btn-info rounded-md"
             >
               Sign out
             </button>

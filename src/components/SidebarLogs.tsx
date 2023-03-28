@@ -3,8 +3,10 @@ import TravelLogContext from '@/context/TravelLogContext';
 import useSidebarsStore from '@/store/sidebarsStore';
 import useMarkerStore from '@/store/markerStore';
 import useRequests from '@/hooks/useRequests';
+import { Tooltip } from 'react-tooltip';
 import CloseButton from './CloseButton';
 import { DeleteIcon, FavoriteStar } from './MapIcons';
+import 'react-tooltip/dist/react-tooltip.css';
 
 export default function SidebarLogs() {
   const { logsbarVisible, setLogsbarVisible } = useSidebarsStore();
@@ -44,7 +46,21 @@ export default function SidebarLogs() {
                 <span>{log.rating}/10</span>
               </p>
               <div>
+                <Tooltip
+                  id="favorite-log"
+                  style={{
+                    width: '80px',
+                    height: '30px',
+                    fontSize: '14px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                />
                 <button
+                  data-tooltip-id="favorite-log"
+                  data-tooltip-content="Favorite"
+                  data-tooltip-place="bottom"
                   className="hover:bg-slate-400 rounded-full p-1"
                   onClick={(event) => {
                     event.stopPropagation();
@@ -53,7 +69,21 @@ export default function SidebarLogs() {
                 >
                   <FavoriteStar isFavorited={log.favorited} />
                 </button>
+                <Tooltip
+                  id="delete-log"
+                  style={{
+                    width: '80px',
+                    height: '30px',
+                    fontSize: '14px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                />
                 <button
+                  data-tooltip-id="delete-log"
+                  data-tooltip-content="Delete"
+                  data-tooltip-place="bottom"
                   className="hover:bg-slate-400 rounded-full p-1"
                   onClick={(event) => {
                     event.stopPropagation();
