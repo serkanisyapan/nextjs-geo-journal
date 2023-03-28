@@ -29,10 +29,6 @@ export default async function handler(
         // @ts-ignore
         return res.status(200).json(validateTravelLog);
       }
-      case 'GET': {
-        const logs = await TravelLogs.find().toArray();
-        return res.status(200).json(logs);
-      }
       case 'DELETE': {
         const { logID } = req.body;
         if (!logID) {

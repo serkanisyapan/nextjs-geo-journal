@@ -2,8 +2,7 @@ import { useContext } from 'react';
 import TravelLogContext from '@/context/TravelLogContext';
 import useSidebarsStore from '@/store/sidebarsStore';
 import useMarkerStore from '@/store/markerStore';
-import useDeleteLog from '@/hooks/useDeleteLog';
-import useFavoriteLog from '@/hooks/useFavoriteLog';
+import useRequests from '@/hooks/useRequests';
 import CloseButton from './CloseButton';
 import { DeleteIcon, FavoriteStar } from './MapIcons';
 
@@ -12,8 +11,7 @@ export default function SidebarLogs() {
   const { setPopupInfo } = useMarkerStore();
   const { filteredLogs, filterLogs, setFilterLogs, mapRef } =
     useContext(TravelLogContext);
-  const { deleteLogReq } = useDeleteLog();
-  const { addFavoriteReq } = useFavoriteLog();
+  const { deleteLogReq, addFavoriteReq } = useRequests();
 
   const shortenDescription = (description: string) => {
     return description.split('').slice(0, 30).join('');

@@ -3,12 +3,12 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TravelLogValidator, TravelLogType } from '@/models/TravelLogValidator';
 import useMarkerStore from '@/store/markerStore';
-import useUpdateLogs from '@/hooks/useUpdateLog';
+import useRequests from '@/hooks/useRequests';
 import FormInputs from './FormInputs';
 
 export default function LogEditForm() {
   const { popupInfo } = useMarkerStore();
-  const { onSubmit, formError, updatingLog } = useUpdateLogs();
+  const { onSubmitUpdate, formError, sendingRequest } = useRequests();
   const {
     register,
     handleSubmit,
@@ -42,11 +42,15 @@ export default function LogEditForm() {
       )}
       <form
         className="max-w-lg m-auto flex flex-col gap-2 my-4 mx-2"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmitUpdate)}
       >
         <FormInputs errors={errors} register={register} />
-        <button className="btn btn-info" type="submit" disabled={updatingLog}>
-          {!updatingLog ? 'Update Log' : <span>Updating Log...</span>}
+        <button
+          className="btn btn-info"
+          type="submit"
+          disabled={sendingRequest}
+        >
+          {!sendingRequest ? 'Update Log' : 'Updating Log...'}
         </button>
       </form>
     </div>

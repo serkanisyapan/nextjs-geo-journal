@@ -5,7 +5,7 @@ import { TravelLogValidator, TravelLogType } from '@/models/TravelLogValidator';
 import { v4 as uuidv4 } from 'uuid';
 import { useSession } from 'next-auth/react';
 import useMarkerStore from '@/store/markerStore';
-import useSubmitLog from '@/hooks/useSubmitLog';
+import useRequests from '@/hooks/useRequests';
 import CloseButton from './CloseButton';
 import FormInputs from './FormInputs';
 
@@ -32,7 +32,7 @@ export default function TravelLogForm() {
     },
   });
   const { data: session } = useSession();
-  const { onSubmit, formError, sendingNewLog } = useSubmitLog();
+  const { onSubmit, formError, sendingRequest } = useRequests();
 
   useEffect(() => {
     if (!newLogMarker) return;
@@ -60,7 +60,7 @@ export default function TravelLogForm() {
       )}
       <form
         className="max-w-lg m-auto flex flex-col gap-2 my-4 mx-2"
-        onSubmit={handleSubmit((data) => onSubmit(data))}
+        onSubmit={handleSubmit(onSubmit)}
       >
         <FormInputs errors={errors} register={register} />
         <button
@@ -73,9 +73,9 @@ export default function TravelLogForm() {
           }}
           className="btn btn-info"
           type="submit"
-          disabled={sendingNewLog}
+          disabled={sendingRequest}
         >
-          {!sendingNewLog ? 'Add Log' : <span>Adding Log...</span>}
+          {!sendingRequest ? 'Add Log' : 'Adding Log...'}
         </button>
       </form>
     </>

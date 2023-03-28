@@ -1,5 +1,4 @@
-import useDeleteLog from '@/hooks/useDeleteLog';
-import useFavoriteLog from '@/hooks/useFavoriteLog';
+import useRequests from '@/hooks/useRequests';
 import { TravelLogTypeWithId } from '@/models/TravelLogValidator';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -12,8 +11,7 @@ interface Props {
 
 export default function PopupInfo({ popupInfo }: Props) {
   const [updateLogForm, setUpdateLogForm] = useState<boolean>(false);
-  const { deleteLogReq } = useDeleteLog();
-  const { addFavoriteReq } = useFavoriteLog();
+  const { deleteLogReq, addFavoriteReq } = useRequests();
 
   return (
     <>
