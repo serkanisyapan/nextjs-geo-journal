@@ -4,28 +4,29 @@ import { useState } from 'react';
 
 export default function UserInfo() {
   const [shareButton, setShareButton] = useState('Share');
-  const [showButtons, setShowButtons] = useState(false);
   const { data: session, status } = useSession();
   if (session && status === 'authenticated') {
     return (
-      <div className="fixed gap-3 top-2 right-2 z-[998]">
-        <div
-          className="flex flex-row items-center gap-1 hover:cursor-pointer"
-          onClick={() => setShowButtons(!showButtons)}
+      <div className="dropdown dropdown-end fixed top-3 right-2 z-[998]">
+        <label tabIndex={0}>
+          <div className="flex flex-row items-center gap-1 hover:cursor-pointer">
+            <p>{session.user?.email?.split('@')[0]}</p>
+            <figure className="w-7">
+              <picture>
+                <img
+                  className="rounded-full"
+                  src={session.user?.image!}
+                  alt={session.user?.name!}
+                />
+              </picture>
+            </figure>
+          </div>
+        </label>
+        <ul
+          tabIndex={0}
+          className="dropdown-content menu p-2 shadow text-black bg-white rounded-box w-40 flex flex-col gap-1 mt-1"
         >
-          <p>{session.user?.email?.split('@')[0]}</p>
-          <figure className="w-7">
-            <picture>
-              <img
-                className="rounded-full"
-                src={session.user?.image!}
-                alt={session.user?.name!}
-              />
-            </picture>
-          </figure>
-        </div>
-        {showButtons && (
-          <div className="fixed top-0 right-[130px] flex flex-col mt-2 gap-1 p-2">
+          <li>
             <button
               onClick={() => {
                 navigator.clipboard.writeText(
@@ -38,18 +39,20 @@ export default function UserInfo() {
                   setShareButton('Share');
                 }, 1000);
               }}
-              className="btn-sm btn-info rounded-md"
+              className="btn btn-info rounded-md"
             >
               {shareButton}
             </button>
+          </li>
+          <li>
             <button
               onClick={() => signOut()}
-              className="btn-sm btn-info rounded-md"
+              className="btn btn-info rounded-md"
             >
               Sign out
             </button>
-          </div>
-        )}
+          </li>
+        </ul>
       </div>
     );
   }
