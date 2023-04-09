@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import LogEditForm from './LogEditForm';
 import { DeleteIcon, EditIcon, FavoriteStar } from './MapIcons';
-import 'react-tooltip/dist/react-tooltip.css';
 
 interface Props {
   popupInfo: TravelLogTypeWithId;

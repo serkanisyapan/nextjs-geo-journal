@@ -5,7 +5,6 @@ import useMarkerStore from '@/store/markerStore';
 import useRequests from '@/hooks/useRequests';
 import CloseButton from './CloseButton';
 import { DeleteIcon, FavoriteStar } from './MapIcons';
-import 'react-tooltip/dist/react-tooltip.css';
 
 export default function SidebarLogs() {
   const { logsbarVisible, setLogsbarVisible } = useSidebarsStore();
